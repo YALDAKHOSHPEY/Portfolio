@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Room with Certificates Wall</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="./images/favicon.ico.png">
+</head>
+<body>
+    <div class="container">
+        <div class="scene" id="scene">
+            <div class="room" id="room">
+                <div class="wall back-wall">
+                    <div class="wall-pattern"></div>
+                    
+                    <div class="welcome-text">Welcome to My Portfolio</div>
+                    
+                    <div class="door-frame">
+                        <div class="door" id="aboutDoor">
+                            <div class="door-texture"></div>
+                            <div class="door-knob"></div>
+                            <div class="door-glow"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="door-passage" id="doorPassage">
+                        <div class="passage-glow"></div>
+                    </div>
+                    
+                    <div class="mysterious-light" id="mysteriousLight"></div>
+                    <div class="fog" id="fogEffect"></div>
+                </div>
+                
+                <div class="wall left-wall">
+                    <div class="wall-pattern"></div>
+                    
+                    <div class="certificate-row" style="align-items: flex-start;">
+                        <div class="certificate-frame" data-id="1">
+                            <img class="certificate-image" src="images/Digital marketing.jpg" alt="Digital marketing Certificate">
+                            <div class="certificate-content">
+                                <div class="certificate-title">Digital marketing-Google 2023/1/3</div>
+                            </div>
+                            <div class="certificate-name">Digital marketing-google</div>
+                        </div>
+                        
+                        <div class="certificate-frame" data-id="2">
+                            <img class="certificate-image" src="images/CS50p-intruduction python.jpg" alt="introduction python Certificate">
+                            <div class="certificate-content">
+                                <div class="certificate-title">introduction python-Harvard 2023/9/3</div>
+                            </div>
+                            <div class="certificate-name">CS50p-introduction-Harvard</div>
+                        </div>
+                        
+                        <div class="certificate-frame" data-id="3">
+                            <img class="certificate-image" src="images/CS50x-completion ten problem.jpg" alt="completion ten problem Certificate">
+                            <div class="certificate-content">
+                                <div class="certificate-title">completion 10problem-Harvard 2023/6/3</div>
+                            </div>
+                            <div class="certificate-name">CS50x-completion-Harvard</div>
+                        </div>
+                        
+                        <div class="certificate-frame" data-id="4">
+                            <img class="certificate-image" src="images/coursera programming for everybody.jpg" alt="Coursera-Michigan Certificate">
+                            <div class="certificate-content">
+                                <div class="certificate-title">programming for everybody-Coursera-Michigan 2024/10/31</div>
+                            </div>
+                            <div class="certificate-name">programming for everybody</div>
+                        </div>
+                    </div>
+                    
+                    <div class="certificate-row" style="align-items: flex-start;">
+                        <div class="certificate-frame" data-id="5">
+                            <img class="certificate-image" src="images/python data structure.jpg" alt="Coursera-Michigan Certificate">
+                            <div class="certificate-content">
+                                <div class="certificate-title">Python data structure-Coursera-Michigan 2024/11/3</div>
+                            </div>
+                            <div class="certificate-name">Python data structure</div>
+                        </div>
+                        
+                        <div class="certificate-frame" data-id="6">
+                            <img class="certificate-image" src="images/using python to access web data.jpg" alt="Coursera-Michigan Certificate">
+                            <div class="certificate-content">
+                                <div class="certificate-title">Using Python to access Web data-Coursera-Michigan 2024/11/7</div>
+                            </div>
+                            <div class="certificate-name">Using Python to access Web data</div>
+                        </div>
+                        
+                        <div class="certificate-frame" data-id="7">
+                            <img class="certificate-image" src="images/using databases with python.jpg" alt="Coursera-Michigan Certificate">
+                            <div class="certificate-content">
+                                <div class="certificate-title">using databases with python-Coursera-Michigan 2024/11/10</div>
+                            </div>
+                            <div class="certificate-name">using databases with python</div>
+                        </div>
+                        
+                        <div class="certificate-frame" data-id="8">
+                            <img class="certificate-image" src="images/python for everybody-c.jpg" alt="Coursera-Michigan Specialization Certificate">
+                            <div class="certificate-content">
+                                <div class="certificate-title">python for everybody-Coursera-Michigan 2024/11/15</div>
+                            </div>
+                            <div class="certificate-name">python for everybody</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="wall right-wall">
+                    <div class="wall-pattern"></div>
+                    
+                    <div class="certificate-row" style="align-items: flex-start;">
+                        <div class="certificate-frame" data-id="17">
+                            <img class="certificate-image" src="images/introduction to software engineering.jpg" alt="Coursera-IBM Certificate">
+                            <div class="certificate-content">
+                                <div class="certificate-title">introduction to software engineering-Coursera-IBM 2024/12/26</div>
+                            </div>
+                            <div class="certificate-name">introduction to software engineering</div>
+                        </div>
+                        
+                        <div class="certificate-frame" data-id="18">
+                            <img class="certificate-image" src="images/introduction to html css jv.jpg" alt="Coursera-IBM Certificate">
+                            <div class="certificate-content">
+                                <div class="certificate-title">introduction to html-css-javascript-Coursera-IBM</div>
+                            </div>
+                            <div class="certificate-name">introduction to html css javascript</div>
+                        </div>
+                        
+                        <div class="certificate-frame" data-id="19">
+                            <img class="certificate-image" src="images/introduction to html5.jpg" alt="Coursera-Michigan Certificate">
+                            <div class="certificate-content">
+                                <div class="certificate-title">introduction to html5-Coursera-Michigan 2024/12/10</div>
+                            </div>
+                            <div class="certificate-name">introduction to html5</div>
+                        </div>
+                        
+                        <div class="certificate-frame" data-id="20">
+                            <img class="certificate-image" src="images/foundations of coding front end.jpg" alt="Coursera-Microsoft Certificate">
+                            <div class="certificate-content">
+                                <div class="certificate-title">foundations of coding front end-Coursera-Microsoft 2025/1/11</div>
+                            </div>
+                            <div class="certificate-name">foundations of coding front end</div>
+                        </div>
+                    </div>
+                    
+                    <div class="certificate-row" style="align-items: flex-start;">
+                        <div class="certificate-frame" data-id="21">
+                            <img class="certificate-image" src="images/introduction-c.jpg" alt="Coursera-Microsoft Certificate">
+                            <div class="certificate-content">
+                                <div class="certificate-title">introduction-c#-Coursera-Microsoft 2025/1/27</div>
+                            </div>
+                            <div class="certificate-name">introduction to programming with c#</div>
+                        </div>
+                        
+                        <div class="certificate-frame" data-id="22">
+                            <img class="certificate-image" src="images/introduction web development.jpg" alt="Mobile Development Certificate">
+                            <div class="certificate-content">
+                                <div class="certificate-title">introduction web development-Coursera-Microsoft 2025/6/26</div>
+                            </div>
+                            <div class="certificate-name">introduction web development</div>
+                        </div>
+                        
+                        <div class="certificate-frame" data-id="23">
+                            <img class="certificate-image" src="images/TTC.jpg" alt="Teacher training course Certificate">
+                            <div class="certificate-content">
+                                <div class="certificate-title">Teacher training course-FR-EN 2002/1/10</div>
+                            </div>
+                            <div class="certificate-name">TTC</div>
+                        </div>
+                        
+                        <div class="certificate-frame" data-id="24">
+                            <img class="certificate-image" src="images/Ruby fundamentals.jpg" alt="Coursera-Packt Certificate">
+                            <div class="certificate-content">
+                                <div class="certificate-title">Ruby fundamentals-Coursera-Packt 2025/9/12</div>
+                            </div>
+                            <div class="certificate-name">Ruby fundamentals</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="floor">
+                    <div class="rug">
+                        <div class="rug-pattern"></div>
+                    </div>
+                </div>
+                <div class="ceiling"></div>
+            </div>
+        </div>
+        
+        <div class="navigation-info">
+            <i class="fas fa-door-open"></i> Click on the door to enter | <i class="fas fa-expand"></i> Use mouse to look around
+        </div>
+
+        <div class="zoom-controls">
+            <div class="zoom-btn" id="zoomIn"><i class="fas fa-plus"></i></div>
+            <div class="zoom-btn" id="zoomOut"><i class="fas fa-minus"></i></div>
+            <div class="zoom-btn" id="resetView"><i class="fas fa-sync"></i></div>
+        </div>
+
+        <div class="upload-container">
+            <p>Upload your certificate image:</p>
+            <input type="file" id="imageUpload" accept="image/*">
+            <label for="imageUpload" class="upload-btn">Choose Image</label>
+            <p>Then click on a frame to apply</p>
+        </div>
+
+        <div class="transition-screen" id="transitionScreen"></div>
+    </div>
+
+    <div class="certificate-modal" id="certificateModal">
+        <div class="close-modal" id="closeModal"><i class="fas fa-times"></i></div>
+        <div class="modal-content" id="modalContent">
+            <img src="" alt="Certificate" id="modalImage">
+        </div>
+    </div>
+
+    <audio id="doorSound" src="./sound/old-wooden-door-creaking-closed-vadi-sound-1-00-06.mp3"></audio>
+    <script src="script.js"></script>
+
+</body>
+</html>

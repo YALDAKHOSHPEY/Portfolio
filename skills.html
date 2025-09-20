@@ -1,0 +1,2217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Yalda Khoshpey – Award-winning Front-End Developer & UI/UX Designer | Discover my comprehensive skill set and technical expertise">
+  <title>Yalda Khoshpey - Skills & Expertise</title>
+  
+  <!-- Preload Critical Resources -->
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" as="style">
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
+  
+  <!-- Critical CSS -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+  
+  <link rel="icon" type="image/png" href="./images/favicon.ico.png">
+  
+  <style>
+    /* CSS Variables for Theming */
+    :root {
+      /* Light Theme */
+      --bg-primary: #fff;
+      --bg-secondary: #f8fafc;
+      --bg-tertiary: #f1f5f9;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --text-muted: #94a3b8;
+      --border-color: #e2e8f0;
+      --shadow-light: rgba(0, 0, 0, 0.1);
+      --shadow-medium: rgba(0, 0, 0, 0.15);
+      --navbar-bg: rgba(255, 255, 255, 0.95);
+      --navbar-scrolled: rgba(255, 255, 255, 0.98);
+      --navbar-shadow: rgba(0, 0, 0, 0.05);
+      --card-bg: #f8fafc;
+      --card-hover: #fff;
+      --loading-bg: #fff;
+      --progress-bg: #e2e8f0;
+      --progress-fill: #8B5CF6;
+    }
+
+    [data-theme="dark"] {
+      /* Dark Theme */
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-tertiary: #334155;
+      --text-primary: #f1f5f9;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --border-color: #334155;
+      --shadow-light: rgba(0, 0, 0, 0.3);
+      --shadow-medium: rgba(0, 0, 0, 0.4);
+      --navbar-bg: rgba(15, 23, 42, 0.95);
+      --navbar-scrolled: rgba(15, 23, 42, 0.98);
+      --navbar-shadow: rgba(0, 0, 0, 0.2);
+      --card-bg: #1e293b;
+      --card-hover: #334155;
+      --loading-bg: #0f172a;
+      --progress-bg: #334155;
+      --progress-fill: #8B5CF6;
+    }
+
+    /* Reset and Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      color: var(--text-primary);
+      overflow-x: hidden;
+      background: var(--bg-primary);
+      transition: background-color 0.3s ease, color 0.3s ease;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Loading Screen */
+    .loading-wrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--loading-bg);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.4s ease;
+    }
+
+    .loading-animation {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .loading-circle {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #8B5CF6;
+      animation: pulse 1.4s ease-in-out infinite both;
+    }
+
+    .loading-circle:nth-child(1) { animation-delay: -0.32s; }
+    .loading-circle:nth-child(2) { animation-delay: -0.16s; }
+
+    @keyframes pulse {
+      0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
+      40% { transform: scale(1); opacity: 1; }
+    }
+
+    .loading-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      color: #8B5CF6;
+      font-size: clamp(14px, 2vw, 16px);
+    }
+
+    /* Mobile Overlay */
+    .mobile-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 998;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease;
+    }
+
+    .mobile-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Navigation */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: var(--navbar-bg);
+      backdrop-filter: blur(20px);
+      z-index: 1000;
+      transition: all 0.3s ease;
+      padding: clamp(0.5rem, 2vw, 1rem) 0;
+      box-shadow: 0 2px 20px var(--navbar-shadow);
+      color: var(--text-primary);
+    }
+
+    .navbar.scrolled {
+      background: var(--navbar-scrolled);
+      padding: clamp(0.25rem, 1.5vw, 0.5rem) 0;
+      box-shadow: 0 2px 30px var(--navbar-shadow);
+    }
+
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 clamp(1rem, 4vw, 2rem);
+      gap: 1rem;
+    }
+
+    .logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.5rem, 4vw, 1.8rem);
+      font-weight: 700;
+      color: #8B5CF6;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .logo:hover {
+      color: #7C3AED;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: clamp(1rem, 2vw, 2rem);
+      margin: 0;
+      padding: 0;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+      padding: 0.5rem 0;
+      white-space: nowrap;
+      font-size: clamp(0.9rem, 1.2vw, 1rem);
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: #8B5CF6;
+    }
+
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: #8B5CF6;
+    }
+
+    /* Theme Toggle Button */
+    .theme-toggle {
+      background: none;
+      border: none;
+      font-size: clamp(1.2rem, 2vw, 1.5rem);
+      color: var(--text-secondary);
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      width: clamp(36px, 5vw, 40px);
+      height: clamp(36px, 5vw, 40px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .theme-toggle:hover {
+      background: var(--border-color);
+      color: #8B5CF6;
+      transform: rotate(15deg);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-shrink: 0;
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: clamp(1.2rem, 2vw, 1.5rem);
+      color: var(--text-secondary);
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+
+    .mobile-menu-btn:hover {
+      background: var(--border-color);
+      color: #8B5CF6;
+    }
+
+    /* Mobile Menu */
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: min(90vw, 300px);
+      height: 100vh;
+      background: var(--bg-primary);
+      z-index: 999;
+      transition: right 0.35s ease;
+      padding: clamp(2rem, 8vw, 5rem) 1.5rem 2rem;
+      box-shadow: -2px 0 20px var(--shadow-light);
+      color: var(--text-primary);
+      overflow-y: auto;
+    }
+
+    .mobile-menu.open {
+      right: 0;
+    }
+
+    .mobile-nav {
+      list-style: none;
+      margin-bottom: 2rem;
+    }
+
+    .mobile-nav-link {
+      display: block;
+      padding: clamp(1rem, 3vw, 1.25rem) 0;
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: clamp(1.1rem, 2.5vw, 1.25rem);
+      font-weight: 500;
+      border-bottom: 1px solid var(--border-color);
+      transition: color 0.3s ease;
+    }
+
+    .mobile-nav-link:hover,
+    .mobile-nav-link.active {
+      color: #8B5CF6;
+    }
+
+    .mobile-theme-toggle {
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border-color);
+      text-align: center;
+    }
+
+    /* Hero Section - Skills Page */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 0 clamp(1rem, 4vw, 2rem);
+      background: linear-gradient(135deg, #8B5CF6 0%, #06B6D4 50%, #10B981 100%);
+      color: white;
+      overflow: hidden;
+    }
+
+    .floating-elements {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .floating-element {
+      position: absolute;
+      width: clamp(3px, 0.5vw, 4px);
+      height: clamp(3px, 0.5vw, 4px);
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+    }
+
+    .floating-element:nth-child(1) {
+      top: 20%;
+      left: 10%;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .floating-element:nth-child(2) {
+      top: 60%;
+      right: 15%;
+      animation: float 8s ease-in-out infinite reverse;
+    }
+
+    .floating-element:nth-child(3) {
+      bottom: 20%;
+      left: 20%;
+      animation: float 7s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+    }
+
+    .hero-content {
+      max-width: min(90vw, 900px);
+      text-align: center;
+      z-index: 2;
+      position: relative;
+      width: 100%;
+    }
+
+    .hero-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.5rem, 7vw, 4.5rem);
+      font-weight: 700;
+      margin-bottom: clamp(0.75rem, 2vw, 1rem);
+      opacity: 0;
+      transform: translateY(50px);
+      line-height: 1.2;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      margin-bottom: clamp(1rem, 3vw, 1.5rem);
+      opacity: 0.9;
+      opacity: 0;
+      transform: translateY(30px);
+      font-weight: 400;
+    }
+
+    .hero-description {
+      font-size: clamp(1rem, 2vw, 1.1rem);
+      margin-bottom: clamp(2rem, 4vw, 2.5rem);
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      opacity: 0;
+      transform: translateY(30px);
+      line-height: 1.7;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: clamp(0.75rem, 2vw, 1rem);
+      justify-content: center;
+      flex-wrap: wrap;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: clamp(0.6rem, 1.5vw, 0.75rem) clamp(1.25rem, 3vw, 1.5rem);
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+      font-size: clamp(0.9rem, 1.2vw, 1rem);
+      white-space: nowrap;
+      flex: 1;
+      min-width: clamp(120px, 20vw, 160px);
+      justify-content: center;
+    }
+
+    .btn-primary {
+      background: white;
+      color: #8B5CF6;
+    }
+
+    .btn-primary:hover {
+      background: #8B5CF6;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: white;
+      border-color: white;
+    }
+
+    .btn-secondary:hover {
+      background: white;
+      color: #8B5CF6;
+      transform: translateY(-2px);
+    }
+
+    /* Skills Section */
+    .skills {
+      padding: clamp(4rem, 8vw, 8rem) clamp(1rem, 4vw, 2rem);
+      background: var(--bg-primary);
+    }
+
+    .skills-container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .skills-header {
+      text-align: center;
+      margin-bottom: clamp(3rem, 6vw, 4rem);
+    }
+
+    .skills-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      color: var(--text-primary);
+      margin-bottom: clamp(0.75rem, 2vw, 1rem);
+      line-height: 1.2;
+    }
+
+    .skills-subtitle {
+      color: var(--text-secondary);
+      font-size: clamp(1rem, 1.8vw, 1.2rem);
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* Skills Progress Section */
+    .skills-progress {
+      background: var(--bg-secondary);
+      padding: clamp(4rem, 8vw, 6rem) 0;
+      margin: clamp(2rem, 4vw, 3rem) 0;
+    }
+
+    .progress-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 clamp(1rem, 4vw, 2rem);
+    }
+
+    .progress-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.75rem, 3vw, 2.25rem);
+      color: var(--text-primary);
+      text-align: center;
+      margin-bottom: clamp(2rem, 4vw, 3rem);
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .progress-item {
+      margin-bottom: clamp(2rem, 4vw, 2.5rem);
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      font-weight: 600;
+    }
+
+    .skill-name {
+      color: var(--text-primary);
+      font-size: clamp(1rem, 1.8vw, 1.1rem);
+    }
+
+    .skill-level {
+      color: var(--text-secondary);
+      font-size: clamp(0.9rem, 1.6vw, 1rem);
+    }
+
+    .progress-bar {
+      height: 8px;
+      background: var(--progress-bg);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--progress-fill), #EC4899);
+      border-radius: 4px;
+      width: 0%;
+      transition: width 2s ease-in-out;
+      position: relative;
+    }
+
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 20px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4));
+      border-radius: 4px;
+    }
+
+    /* Skills Grid */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(clamp(280px, 45vw, 320px), 1fr));
+      gap: clamp(2rem, 5vw, 3rem);
+      margin-top: clamp(3rem, 6vw, 4rem);
+    }
+
+    .skill-card {
+      padding: clamp(2rem, 4vw, 2.5rem) clamp(2rem, 4vw, 2.5rem);
+      border-radius: 24px;
+      background: var(--card-bg);
+      transition: all 0.3s ease;
+      opacity: 0;
+      transform: translateY(50px) scale(0.95);
+      border: 1px solid var(--border-color);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skill-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #8B5CF6, #EC4899, #10B981);
+      background-size: 200% 100%;
+      animation: shimmer 3s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { background-position: 200% 0; }
+      50% { background-position: 0 0; }
+    }
+
+    .skill-card:hover {
+      transform: translateY(-12px) scale(1.02);
+      box-shadow: 0 25px 50px var(--shadow-medium);
+      background: var(--card-hover);
+    }
+
+    .skill-icon {
+      width: clamp(70px, 12vw, 90px);
+      height: clamp(70px, 12vw, 90px);
+      background: linear-gradient(135deg, #8B5CF6, #EC4899);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto clamp(1.25rem, 3vw, 1.5rem);
+      font-size: clamp(1.75rem, 3.5vw, 2.25rem);
+      color: white;
+      position: relative;
+      z-index: 2;
+      box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .skill-card:hover .skill-icon {
+      transform: scale(1.1) rotate(5deg);
+      box-shadow: 0 15px 40px rgba(139, 92, 246, 0.4);
+    }
+
+    .skill-card h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+      color: var(--text-primary);
+      margin-bottom: clamp(1rem, 2vw, 1.25rem);
+      line-height: 1.3;
+      position: relative;
+      z-index: 2;
+    }
+
+    .skill-card p {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      font-size: clamp(0.95rem, 1.5vw, 1rem);
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Skill Categories */
+    .skills-categories {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: clamp(1.5rem, 4vw, 2rem);
+      margin: clamp(4rem, 8vw, 6rem) 0;
+    }
+
+    .category-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: clamp(2rem, 4vw, 2.5rem);
+      text-align: center;
+      transition: all 0.3s ease;
+      border: 1px solid var(--border-color);
+      opacity: 0;
+      transform: translateY(30px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .category-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(236, 72, 153, 0.05));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .category-card:hover::before {
+      opacity: 1;
+    }
+
+    .category-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px var(--shadow-light);
+      background: var(--card-hover);
+    }
+
+    .category-icon {
+      font-size: clamp(2.5rem, 6vw, 3.5rem);
+      color: #8B5CF6;
+      margin-bottom: clamp(1rem, 2vw, 1.25rem);
+      transition: all 0.3s ease;
+    }
+
+    .category-card:hover .category-icon {
+      transform: scale(1.1);
+      color: #7C3AED;
+    }
+
+    .category-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+      font-weight: 600;
+    }
+
+    .category-description {
+      color: var(--text-secondary);
+      font-size: clamp(0.9rem, 1.5vw, 1rem);
+      line-height: 1.6;
+    }
+
+    /* Tools Section */
+    .tools-section {
+      padding: clamp(4rem, 8vw, 6rem) clamp(1rem, 4vw, 2rem);
+      background: var(--bg-secondary);
+    }
+
+    .tools-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .tools-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 4vw, 2.5rem);
+      color: var(--text-primary);
+      margin-bottom: clamp(1rem, 2vw, 1.25rem);
+      line-height: 1.2;
+    }
+
+    .tools-subtitle {
+      color: var(--text-secondary);
+      font-size: clamp(1rem, 1.8vw, 1.1rem);
+      margin-bottom: clamp(3rem, 6vw, 4rem);
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: clamp(1.5rem, 3vw, 2rem);
+    }
+
+    .tool-item {
+      opacity: 0;
+      transform: translateY(20px) scale(0.9);
+      transition: all 0.3s ease;
+    }
+
+    .tool-item.animate-in,
+    .tool-item.show {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .tool-icon {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: #8B5CF6;
+      background: var(--bg-primary);
+      border-radius: 12px;
+      box-shadow: 0 4px 15px var(--shadow-light);
+      transition: all 0.3s ease;
+    }
+
+    .tool-item:hover .tool-icon {
+      transform: scale(1.1);
+      background: #8B5CF6;
+      color: white;
+      box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+    }
+
+    .tool-name {
+      font-weight: 500;
+      color: var(--text-primary);
+      font-size: 0.9rem;
+    }
+
+    /* Contact Section */
+    .contact {
+      padding: clamp(4rem, 8vw, 8rem) clamp(1rem, 4vw, 2rem);
+      background: var(--bg-primary);
+      text-align: center;
+    }
+
+    .contact-content {
+      max-width: min(90vw, 800px);
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .contact-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 4vw, 2.5rem);
+      color: var(--text-primary);
+      margin-bottom: clamp(0.75rem, 2vw, 1rem);
+      line-height: 1.2;
+    }
+
+    .contact-subtitle {
+      color: var(--text-secondary);
+      font-size: clamp(1rem, 1.8vw, 1.1rem);
+      margin-bottom: clamp(2rem, 6vw, 4rem);
+      line-height: 1.6;
+    }
+
+    .contact-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(clamp(220px, 80vw, 250px), 1fr));
+      gap: clamp(1.5rem, 4vw, 2rem);
+    }
+
+    .contact-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      padding: clamp(1.5rem, 4vw, 2rem);
+      background: var(--card-bg);
+      border-radius: 20px;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.3s ease;
+      opacity: 0;
+      transform: translateY(30px);
+      border: 1px solid var(--border-color);
+      text-align: center;
+    }
+
+    .contact-link:hover {
+      transform: translateY(-10px);
+      background: var(--card-hover);
+      box-shadow: 0 20px 40px var(--shadow-light);
+    }
+
+    .contact-link i {
+      font-size: clamp(2.5rem, 6vw, 3rem);
+      color: #8B5CF6;
+      margin-bottom: clamp(0.75rem, 2vw, 1rem);
+    }
+
+    .contact-link h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.1rem, 2.2vw, 1.3rem);
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      line-height: 1.3;
+    }
+
+    .contact-link p {
+      color: var(--text-secondary);
+      font-size: clamp(0.85rem, 1.5vw, 0.95rem);
+      margin: 0;
+    }
+
+    /* Footer */
+    .footer {
+      background: #1e293b;
+      color: white;
+      padding: clamp(2rem, 6vw, 3rem) clamp(1rem, 4vw, 2rem) clamp(1rem, 2vw, 1rem);
+    }
+
+    .footer-content {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: clamp(1.5rem, 4vw, 2rem);
+      flex-wrap: wrap;
+      gap: clamp(1rem, 3vw, 2rem);
+    }
+
+    .footer-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.5rem, 3vw, 1.8rem);
+      font-weight: 700;
+      color: #8B5CF6;
+    }
+
+    .social-links {
+      display: flex;
+      gap: clamp(0.75rem, 2vw, 1rem);
+    }
+
+    .social-link {
+      width: clamp(40px, 6vw, 50px);
+      height: clamp(40px, 6vw, 50px);
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+    }
+
+    .social-link:hover {
+      background: #8B5CF6;
+      transform: translateY(-3px);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: clamp(1rem, 3vw, 2rem);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+      font-size: clamp(0.85rem, 1.2vw, 0.95rem);
+    }
+
+    /* Back to Top */
+    .back-to-top {
+      position: fixed;
+      bottom: clamp(1rem, 3vw, 2rem);
+      right: clamp(1rem, 3vw, 2rem);
+      width: clamp(45px, 7vw, 50px);
+      height: clamp(45px, 7vw, 50px);
+      background: #8B5CF6;
+      border: none;
+      border-radius: 50%;
+      color: white;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      z-index: 100;
+      box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
+    }
+
+    .back-to-top.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .back-to-top:hover {
+      background: #7C3AED;
+      transform: translateY(-3px);
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* Enhanced Mobile Styles */
+    @media (max-width: 1024px) {
+      .nav-links {
+        gap: 1.5rem;
+      }
+
+      .nav-container {
+        padding: 0 clamp(1rem, 3vw, 1.5rem);
+      }
+
+      .skills-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .nav-actions {
+        gap: 0.5rem;
+      }
+
+      .hero {
+        padding: 0 clamp(0.75rem, 3vw, 1rem);
+        min-height: 100vh;
+      }
+
+      .hero-content {
+        padding: 0 clamp(1rem, 4vw, 2rem);
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .btn {
+        width: 100%;
+        max-width: 280px;
+        justify-content: center;
+      }
+
+      .skills-grid {
+        grid-template-columns: 1fr;
+        gap: clamp(2rem, 5vw, 3rem);
+      }
+
+      .skills-categories {
+        grid-template-columns: 1fr;
+        gap: clamp(1.5rem, 4vw, 2rem);
+      }
+
+      .tools-grid {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .contact-links {
+        grid-template-columns: 1fr;
+        gap: clamp(1.5rem, 4vw, 2rem);
+      }
+
+      .footer-top {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.5rem;
+      }
+
+      .nav-container {
+        padding: 0 clamp(0.75rem, 3vw, 1rem);
+      }
+
+      .skills, .skills-progress, .tools-section, .contact {
+        padding: clamp(2.5rem, 6vw, 4rem) clamp(0.75rem, 3vw, 1rem);
+      }
+
+      .back-to-top {
+        bottom: 1rem;
+        right: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-title {
+        font-size: clamp(1.75rem, 8vw, 2.25rem);
+      }
+
+      .hero-subtitle {
+        font-size: clamp(1rem, 4vw, 1.125rem);
+      }
+
+      .hero-description {
+        font-size: clamp(0.95rem, 3vw, 1rem);
+        padding: 0 0.5rem;
+      }
+
+      .contact-link {
+        padding: clamp(1.25rem, 5vw, 1.5rem);
+      }
+
+      .skill-card {
+        padding: clamp(1.5rem, 4vw, 2rem);
+      }
+
+      .category-card {
+        padding: clamp(1.5rem, 4vw, 2rem);
+      }
+
+      .skills-header,
+      .tools-container {
+        padding: 0 0.5rem;
+      }
+
+      .footer {
+        padding: clamp(1.5rem, 5vw, 2rem) clamp(0.75rem, 3vw, 1rem);
+      }
+
+      .social-links {
+        justify-content: center;
+      }
+
+      .tools-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 360px) {
+      .nav-container,
+      .hero,
+      .skills,
+      .skills-progress,
+      .tools-section,
+      .contact,
+      .footer {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+      }
+
+      .mobile-menu {
+        width: 95vw;
+        padding: 2rem 1rem 1.5rem;
+      }
+
+      .btn {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+      }
+
+      .tools-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* Animation Classes for Fallback */
+    .animate-in {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+
+    .hero-title.animate-in,
+    .hero-subtitle.animate-in,
+    .hero-description.animate-in,
+    .cta-buttons.animate-in {
+      animation: fadeInUp 0.8s ease forwards;
+    }
+
+    .skill-card.animate-in,
+    .category-card.animate-in,
+    .contact-link.animate-in,
+    .progress-item.animate-in {
+      animation: fadeInUp 0.8s ease forwards;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* High DPI/Retina Display Support */
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+      .skill-icon,
+      .category-icon,
+      .tool-icon {
+        image-rendering: -webkit-optimize-contrast;
+      }
+    }
+
+    /* Reduced Motion Support */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+
+      .floating-element,
+      .skill-card::before {
+        animation: none;
+      }
+    }
+
+    /* Focus Styles for Accessibility */
+    .btn:focus,
+    .nav-link:focus,
+    .theme-toggle:focus,
+    .mobile-menu-btn:focus,
+    .back-to-top:focus,
+    .social-link:focus,
+    .contact-link:focus {
+      outline: 2px solid #8B5CF6;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Faster Loading Screen -->
+  <div class="loading-wrapper" id="loadingWrapper">
+    <div class="loading-animation">
+      <div class="loading-circle"></div>
+      <div class="loading-circle"></div>
+      <div class="loading-circle"></div>
+    </div>
+    <div class="loading-text">Loading Skills...</div>
+  </div>
+
+  <!-- Mobile Overlay -->
+  <div class="mobile-overlay" id="mobileOverlay"></div>
+
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo">Yalda</a>
+      
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html" class="nav-link" data-section="home">Home</a></li>
+        <li><a href="about.html" class="nav-link" data-section="about">About</a></li>
+        <li><a href="skills.html" class="nav-link active" data-section="skills">Skills</a></li>
+        <li><a href="projects.html" class="nav-link" data-section="projects">Projects</a></li>
+        <li><a href="#contact" class="nav-link" data-section="contact">Contact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Toggle dark/light mode">
+          <i class="fas fa-moon"></i>
+        </button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <ul class="mobile-nav">
+      <li><a href="index.html" class="mobile-nav-link" data-section="home">Home</a></li>
+      <li><a href="about.html" class="mobile-nav-link" data-section="about">About</a></li>
+      <li><a href="skills.html" class="mobile-nav-link active" data-section="skills">Skills</a></li>
+      <li><a href="projects.html" class="mobile-nav-link" data-section="projects">Projects</a></li>
+      <li><a href="#contact" class="mobile-nav-link" data-section="contact">Contact</a></li>
+    </ul>
+    <div class="mobile-theme-toggle">
+      <button class="theme-toggle" id="mobileThemeToggle" aria-label="Toggle theme" title="Toggle dark/light mode">
+        <i class="fas fa-moon"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Hero Section - Skills Page -->
+  <section class="hero" id="hero">
+    <div class="floating-elements">
+      <div class="floating-element"></div>
+      <div class="floating-element"></div>
+      <div class="floating-element"></div>
+    </div>
+    
+    <div class="hero-content">
+      <h1 class="hero-title">My Skill Set</h1>
+      <p class="hero-subtitle">Mastering Modern Web Development</p>
+      <p class="hero-description">
+        With years of hands-on experience and continuous learning, I've built a comprehensive skill set that spans 
+        the entire spectrum of web development—from pixel-perfect UI design to robust backend architecture.
+      </p>
+      <div class="cta-buttons">
+        <a href="#skills" class="btn btn-primary">
+          <i class="fas fa-star"></i>
+          Explore Skills
+        </a>
+        <a href="#contact" class="btn btn-secondary">
+          <i class="fas fa-rocket"></i>
+          Start Project
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section class="skills" id="skills">
+    <div class="skills-container">
+      <div class="skills-header">
+        <h2 class="skills-title">Technical Expertise</h2>
+        <p class="skills-subtitle">
+          I specialize in creating scalable, performant web applications using the latest technologies and best practices.
+          My approach combines technical excellence with creative problem-solving.
+        </p>
+      </div>
+
+      <!-- Skills Progress -->
+      <section class="skills-progress">
+        <div class="progress-container">
+          <h3 class="progress-title">Proficiency Levels</h3>
+          
+          <div class="progress-item">
+            <div class="progress-label">
+              <span class="skill-name">React & React Native</span>
+              <span class="skill-level">Expert</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" data-width="95"></div>
+            </div>
+          </div>
+
+          <div class="progress-item">
+            <div class="progress-label">
+              <span class="skill-name">TypeScript & JavaScript</span>
+              <span class="skill-level">Expert</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" data-width="92"></div>
+            </div>
+          </div>
+
+          <div class="progress-item">
+            <div class="progress-label">
+              <span class="skill-name">Next.js & Vue.js</span>
+              <span class="skill-level">Advanced</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" data-width="88"></div>
+            </div>
+          </div>
+
+          <div class="progress-item">
+            <div class="progress-label">
+              <span class="skill-name">Node.js & Express</span>
+              <span class="skill-level">Advanced</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" data-width="85"></div>
+            </div>
+          </div>
+
+          <div class="progress-item">
+            <div class="progress-label">
+              <span class="skill-name">UI/UX Design</span>
+              <span class="skill-level">Expert</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" data-width="90"></div>
+            </div>
+          </div>
+
+          <div class="progress-item">
+            <div class="progress-label">
+              <span class="skill-name">Performance Optimization</span>
+              <span class="skill-level">Advanced</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" data-width="87"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="skills-grid">
+        <div class="skill-card">
+          <div class="skill-icon">
+            <i class="fab fa-react"></i>
+          </div>
+          <h3>React Ecosystem</h3>
+          <p>
+            Building dynamic, component-based UIs with React, Next.js, and modern state management. 
+            Creating reusable components, custom hooks, and optimized rendering patterns.
+          </p>
+        </div>
+        
+        <div class="skill-card">
+          <div class="skill-icon">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+          <h3>Mobile Development</h3>
+          <p>
+            Cross-platform mobile apps with React Native and Expo. Native performance with 
+            smooth animations, gesture handling, and platform-specific optimizations.
+          </p>
+        </div>
+        
+        <div class="skill-card">
+          <div class="skill-icon">
+            <i class="fas fa-server"></i>
+          </div>
+          <h3>Backend Development</h3>
+          <p>
+            Full-stack capabilities with Node.js, Express, and REST/GraphQL APIs. Database 
+            design with MongoDB, PostgreSQL, and Prisma ORM for scalable applications.
+          </p>
+        </div>
+        
+        <div class="skill-card">
+          <div class="skill-icon">
+            <i class="fas fa-paint-brush"></i>
+          </div>
+          <h3>UI/UX Design</h3>
+          <p>
+            Creating intuitive interfaces with Figma, Adobe XD, and design systems. 
+            User research, wireframing, prototyping, and design implementation with pixel-perfect precision.
+          </p>
+        </div>
+        
+        <div class="skill-card">
+          <div class="skill-icon">
+            <i class="fas fa-bolt"></i>
+          </div>
+          <h3>Performance</h3>
+          <p>
+            Core Web Vitals optimization, code splitting, lazy loading, and caching strategies. 
+            Achieving 100 Lighthouse scores and sub-2-second load times across all devices.
+          </p>
+        </div>
+        
+        <div class="skill-card">
+          <div class="skill-icon">
+            <i class="fas fa-cogs"></i>
+          </div>
+          <h3>DevOps & Deployment</h3>
+          <p>
+            CI/CD pipelines, containerization with Docker, and deployment on Vercel, Netlify, 
+            and AWS. Automated testing, monitoring, and production-ready infrastructure.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Categories -->
+  <section class="skills-categories" id="categories">
+    <div class="category-card">
+      <i class="fas fa-laptop-code category-icon"></i>
+      <h3 class="category-title">Frontend Development</h3>
+      <p class="category-description">
+        Crafting responsive, accessible web interfaces with modern JavaScript frameworks 
+        and CSS methodologies for optimal user experiences.
+      </p>
+    </div>
+    
+    <div class="category-card">
+      <i class="fas fa-database category-icon"></i>
+      <h3 class="category-title">Backend & APIs</h3>
+      <p class="category-description">
+        Building robust server-side applications, RESTful APIs, and database solutions 
+        with security and scalability at the forefront.
+      </p>
+    </div>
+    
+    <div class="category-card">
+      <i class="fas fa-chart-line category-icon"></i>
+      <h3 class="category-title">Performance & SEO</h3>
+      <p class="category-description">
+        Optimizing for speed, search engines, and accessibility. Implementing progressive 
+        enhancement and semantic markup for maximum reach.
+      </p>
+    </div>
+    
+    <div class="category-card">
+      <i class="fas fa-users-cog category-icon"></i>
+      <h3 class="category-title">Collaboration</h3>
+      <p class="category-description">
+        Working effectively with cross-functional teams using Agile methodologies, 
+        version control, and clear communication practices.
+      </p>
+    </div>
+  </section>
+
+  <!-- Tools Section -->
+  <section class="tools-section">
+    <div class="tools-container">
+      <h2 class="tools-title">Tools & Technologies</h2>
+      <p class="tools-subtitle">
+        I work with the best tools in the industry to deliver exceptional results. 
+        Continuously learning and adapting to the latest technologies.
+      </p>
+      
+      <div class="tools-grid">
+        <div class="tool-item">
+          <div class="tool-icon">
+            <i class="fab fa-react"></i>
+          </div>
+          <div class="tool-name">React</div>
+        </div>
+        
+        <div class="tool-item">
+          <div class="tool-icon">
+            <i class="fab fa-vuejs"></i>
+          </div>
+          <div class="tool-name">Vue.js</div>
+        </div>
+        
+        <div class="tool-item">
+          <div class="tool-icon">
+            <i class="fab fa-node-js"></i>
+          </div>
+          <div class="tool-name">Node.js</div>
+        </div>
+        
+        <div class="tool-item">
+          <div class="tool-icon">
+            <i class="fas fa-database"></i>
+          </div>
+          <div class="tool-name">MongoDB</div>
+        </div>
+        
+        <div class="tool-item">
+          <div class="tool-icon">
+            <i class="fab fa-git-alt"></i>
+          </div>
+          <div class="tool-name">Git</div>
+        </div>
+        
+        <div class="tool-item">
+          <div class="tool-icon">
+            <i class="fab fa-figma"></i>
+          </div>
+          <div class="tool-name">Figma</div>
+        </div>
+        
+        <div class="tool-item">
+          <div class="tool-icon">
+            <i class="fab fa-docker"></i>
+          </div>
+          <div class="tool-name">Docker</div>
+        </div>
+        
+        <div class="tool-item">
+          <div class="tool-icon">
+            <i class="fas fa-terminal"></i>
+          </div>
+          <div class="tool-name">VS Code</div>
+        </div>
+        
+        <div class="tool-item">
+          <div class="tool-icon">
+            <i class="fab fa-npm"></i>
+          </div>
+          <div class="tool-name">npm/Yarn</div>
+        </div>
+        
+        <div class="tool-item">
+          <div class="tool-icon">
+            <i class="fab fa-sass"></i>
+          </div>
+          <div class="tool-name">Sass</div>
+        </div>
+        
+        <div class="tool-item">
+          <div class="tool-icon">
+            <i class="fab fa-tailwind"></i>
+          </div>
+          <div class="tool-name">Tailwind</div>
+        </div>
+        
+        <div class="tool-item">
+          <div class="tool-icon">
+            <i class="fab fa-js-square"></i>
+          </div>
+          <div class="tool-name">TypeScript</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact" id="contact">
+    <div class="contact-content">
+      <h2 class="contact-title">Ready to Build Something Amazing?</h2>
+      <p class="contact-subtitle">
+        Let's discuss how my skills can help bring your vision to life. I'm passionate about 
+        creating digital experiences that make a real impact.
+      </p>
+      
+      <div class="contact-links">
+        <a href="mailto:hello@yalda.dev" class="contact-link">
+          <i class="fas fa-envelope"></i>
+          <h3>Get In Touch</h3>
+          <p>hello@yalda.dev</p>
+        </a>
+        
+        <a href="https://linkedin.com/in/yalda-khoshpey" class="contact-link" target="_blank" rel="noopener">
+          <i class="fab fa-linkedin"></i>
+          <h3>Professional Network</h3>
+          <p>Connect on LinkedIn</p>
+        </a>
+        
+        <a href="https://github.com/YALDAKHOSHPEY" class="contact-link" target="_blank" rel="noopener">
+          <i class="fab fa-github"></i>
+          <h3>Code Repository</h3>
+          <p>Explore my work</p>
+        </a>
+        
+        <a href="https://twitter.com/yalda_dev" class="contact-link" target="_blank" rel="noopener">
+          <i class="fab fa-twitter"></i>
+          <h3>Follow Updates</h3>
+          <p>Latest insights</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-top">
+        <div class="footer-logo">Yalda Khoshpey</div>
+        <div class="social-links">
+          <a href="https://github.com/YALDAKHOSHPEY" class="social-link" target="_blank" rel="noopener">
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="https://linkedin.com/in/yalda-khoshpey" class="social-link" target="_blank" rel="noopener">
+            <i class="fab fa-linkedin"></i>
+          </a>
+          <a href="https://twitter.com/yalda_dev" class="social-link" target="_blank" rel="noopener">
+            <i class="fab fa-twitter"></i>
+          </a>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2025 Yalda Khoshpey. Building the future of web development, one line of code at a time. 🚀</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Enhanced Back to Top Button -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top" title="Back to top">
+    <i class="fas fa-arrow-up" aria-hidden="true"></i>
+    <span class="sr-only">Back to top</span>
+  </button>
+
+  <script>
+    /**
+     * Skills Page Script
+     * Enhanced with progress bars, tool animations, and comprehensive skill showcase
+     */
+    
+    (function () {
+      'use strict';
+    
+      /* ---------- Safe GSAP plugin registration ---------- */
+      if (window.gsap && typeof window.gsap.registerPlugin === 'function') {
+        if (window.ScrollTrigger) {
+          try { gsap.registerPlugin(ScrollTrigger); } catch (e) { console.warn('ScrollTrigger register failed', e); }
+        }
+        if (window.ScrollToPlugin) {
+          try { gsap.registerPlugin(ScrollToPlugin); } catch (e) { console.warn('ScrollToPlugin register failed', e); }
+        }
+      }
+    
+      /* ---------- Utility: throttle ---------- */
+      function throttle(fn, wait = 16) {
+        let inThrottle = false;
+        return function (...args) {
+          if (!inThrottle) {
+            fn.apply(this, args);
+            inThrottle = true;
+            setTimeout(() => (inThrottle = false), wait);
+          }
+        };
+      }
+    
+      /* ---------- Utility: safeGSAP wrapper ---------- */
+      function safeGSAP(target, fromVars, toVars) {
+        if (!window.gsap) return false;
+        try {
+          if (fromVars) {
+            gsap.fromTo(target, fromVars, toVars);
+          } else {
+            gsap.to(target, toVars);
+          }
+          return true;
+        } catch (err) {
+          console.warn('GSAP animation failed:', err);
+          return false;
+        }
+      }
+    
+      /* ---------- Theme Management ---------- */
+      function initTheme() {
+        const themeToggle = document.getElementById('themeToggle');
+        const mobileThemeToggle = document.getElementById('mobileThemeToggle');
+        const html = document.documentElement;
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        
+        html.setAttribute('data-theme', currentTheme);
+        updateThemeIcon(currentTheme);
+        
+        function updateThemeIcon(theme) {
+          const icon = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+          if (themeToggle) themeToggle.querySelector('i').className = icon;
+          if (mobileThemeToggle) mobileThemeToggle.querySelector('i').className = icon;
+        }
+        
+        function toggleTheme() {
+          const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+          html.setAttribute('data-theme', newTheme);
+          localStorage.setItem('theme', newTheme);
+          updateThemeIcon(newTheme);
+          
+          if (window.gsap) {
+            safeGSAP('body', null, { duration: 0.3, ease: "power2.inOut" });
+          }
+          
+          console.info(`🌙 Theme switched to: ${newTheme}`);
+        }
+        
+        if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
+        if (mobileThemeToggle) mobileThemeToggle.addEventListener('click', toggleTheme);
+        
+        [themeToggle, mobileThemeToggle].forEach(btn => {
+          if (btn) {
+            btn.addEventListener('keydown', (e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleTheme();
+              }
+            });
+          }
+        });
+      }
+    
+      /* ---------- Smooth scroll with fallbacks ---------- */
+      function smoothScrollTo(y, duration = 1000) {
+        if (window.gsap && window.ScrollToPlugin) {
+          try {
+            gsap.to(window, { duration: duration / 1000, scrollTo: { y, autoKill: true }, ease: "power2.inOut" });
+            return;
+          } catch (err) {
+            console.warn('GSAP ScrollTo failed, falling back', err);
+          }
+        }
+    
+        if ('scrollBehavior' in document.documentElement.style) {
+          window.scrollTo({ top: y, behavior: 'smooth' });
+          return;
+        }
+    
+        const start = window.pageYOffset;
+        const distance = y - start;
+        const startTime = performance.now();
+    
+        function animation(now) {
+          const elapsed = now - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          window.scrollTo(0, Math.round(start + distance * eased));
+          if (elapsed < duration) requestAnimationFrame(animation);
+        }
+        requestAnimationFrame(animation);
+      }
+    
+      /* ---------- DOM elements (resolved on init) ---------- */
+      let elements = {};
+    
+      /* ---------- Progress Bar Animation ---------- */
+      function initProgressBars() {
+        const progressBars = document.querySelectorAll('.progress-fill[data-width]');
+        
+        if (window.IntersectionObserver) {
+          const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                const bar = entry.target;
+                const width = bar.getAttribute('data-width');
+                
+                if (window.gsap) {
+                  safeGSAP(bar, { width: 0 }, { width: width + '%', duration: 2, ease: 'power2.out' });
+                } else {
+                  bar.style.width = width + '%';
+                  bar.style.transition = 'width 2s ease-out';
+                }
+                
+                observer.unobserve(entry.target);
+              }
+            });
+          }, { threshold: 0.5 });
+          
+          progressBars.forEach(bar => observer.observe(bar));
+        } else {
+          // Fallback: animate on load
+          progressBars.forEach(bar => {
+            const width = bar.getAttribute('data-width');
+            bar.style.width = width + '%';
+          });
+        }
+      }
+    
+      /* ---------- Tools Grid Animation ---------- */
+      function initToolsAnimation() {
+        const toolItems = document.querySelectorAll('.tool-item');
+        
+        if (window.gsap && window.ScrollTrigger) {
+          gsap.utils.toArray(toolItems).forEach((item, i) => {
+            ScrollTrigger.create({
+              trigger: item,
+              start: 'top 85%',
+              onEnter: () => {
+                safeGSAP(item, { opacity: 0, y: 20, scale: 0.9 }, { 
+                  opacity: 1, y: 0, scale: 1, duration: 0.6, delay: i * 0.05, ease: 'back.out(1.7)' 
+                });
+              }
+            });
+          });
+        } else if ('IntersectionObserver' in window) {
+          const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('show');
+                observer.unobserve(entry.target);
+              }
+            });
+          }, { threshold: 0.1 });
+          
+          toolItems.forEach(item => observer.observe(item));
+        }
+      }
+    
+      /* ---------- Initialize App ---------- */
+      function initApp() {
+        console.info('🚀 Initializing skills page app');
+    
+        elements = {
+          loadingWrapper: document.getElementById('loadingWrapper'),
+          navbar: document.getElementById('navbar'),
+          navLinks: document.querySelectorAll('.nav-link'),
+          mobileMenuBtn: document.getElementById('mobileMenuBtn'),
+          mobileMenu: document.getElementById('mobileMenu'),
+          mobileOverlay: document.getElementById('mobileOverlay'),
+          backToTop: document.getElementById('backToTop')
+        };
+    
+        initTheme();
+        handleLoadingScreen();
+        initBackToTop();
+        initMobileMenu();
+        initNavSmoothScroll();
+        initProgressBars();
+        initToolsAnimation();
+        initLazyImages();
+        
+        if (window.gsap && window.ScrollTrigger) {
+          initScrollAnimations();
+        } else {
+          initFallbackAnimations();
+        }
+        
+        initNavbarScroll();
+        
+        console.info('✅ Skills page app initialized successfully');
+      }
+    
+      /* ---------- Loading screen ---------- */
+      function handleLoadingScreen() {
+        const wrap = elements.loadingWrapper;
+        if (!wrap) return;
+    
+        if (window.gsap) {
+          safeGSAP(wrap, null, {
+            opacity: 0, duration: 0.4, ease: "power2.inOut",
+            onComplete: () => { wrap.style.display = 'none'; }
+          });
+        } else {
+          wrap.style.transition = 'opacity 0.4s ease';
+          wrap.style.opacity = '0';
+          setTimeout(() => { wrap.style.display = 'none'; }, 500);
+        }
+      }
+    
+      /* ---------- Navbar show/hide on scroll ---------- */
+      function initNavbarScroll() {
+        let lastY = window.scrollY || 0;
+        const navbar = () => elements.navbar;
+        function update() {
+          const current = window.scrollY;
+          if (!navbar()) return;
+    
+          if (current > 100) navbar().classList.add('scrolled');
+          else navbar().classList.remove('scrolled');
+    
+          if (current > lastY && current > 120) {
+            safeGSAP(navbar(), null, { y: -100, duration: 0.25, ease: "power2.out" });
+          } else {
+            safeGSAP(navbar(), null, { y: 0, duration: 0.25, ease: "power2.out" });
+          }
+          lastY = current;
+        }
+        window.addEventListener('scroll', throttle(() => requestAnimationFrame(update), 16), { passive: true });
+      }
+    
+      /* ---------- Mobile menu ---------- */
+      function initMobileMenu() {
+        const btn = elements.mobileMenuBtn;
+        const menu = elements.mobileMenu;
+        const overlay = elements.mobileOverlay;
+    
+        if (!btn || !menu || !overlay) return;
+    
+        function openMenu() {
+          menu.classList.add('open');
+          overlay.classList.add('show');
+          document.body.style.overflow = 'hidden';
+          safeGSAP(menu, { x: '100%' }, { x: 0, duration: 0.35, ease: "power2.out" });
+        }
+    
+        function closeMenu() {
+          safeGSAP(menu, null, { x: '100%', duration: 0.28, ease: "power2.in" });
+          menu.classList.remove('open');
+          overlay.classList.remove('show');
+          document.body.style.overflow = 'auto';
+        }
+    
+        btn.addEventListener('click', (e) => { e.stopPropagation(); openMenu(); });
+        overlay.addEventListener('click', (e) => { e.stopPropagation(); closeMenu(); });
+    
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+          link.addEventListener('click', () => closeMenu());
+        });
+    
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && menu.classList.contains('open')) closeMenu();
+        });
+      }
+    
+      /* ---------- Smooth scroll for nav links ---------- */
+      function initNavSmoothScroll() {
+        const allLinks = document.querySelectorAll('a[href^="#"]');
+        allLinks.forEach(anchor => {
+          anchor.addEventListener('click', function (e) {
+            const href = this.getAttribute('href');
+            if (!href || href === '#' || href === '#!') return;
+            
+            if (href.startsWith('#')) {
+              e.preventDefault();
+              if (href === '#home' || href === 'index.html') {
+                smoothScrollTo(0, 800);
+                updateActiveNavLink('#hero');
+                return;
+              }
+              const target = document.querySelector(href);
+              if (target) {
+                const targetY = target.getBoundingClientRect().top + window.scrollY - 80;
+                smoothScrollTo(targetY, 1000);
+                updateActiveNavLink(href);
+              }
+              if (elements.mobileMenu && elements.mobileMenu.classList.contains('open')) {
+                elements.mobileMenu.classList.remove('open');
+                elements.mobileOverlay.classList.remove('show');
+                document.body.style.overflow = 'auto';
+              }
+            }
+          });
+        });
+      }
+    
+      /* ---------- Back to Top ---------- */
+      function initBackToTop() {
+        const btn = elements.backToTop;
+        if (!btn) return;
+    
+        const SHOW_THRESHOLD = 300;
+    
+        function onScroll() {
+          const scrollY = window.scrollY;
+          if (scrollY > SHOW_THRESHOLD) {
+            if (!btn.classList.contains('show')) {
+              btn.classList.add('show');
+              if (window.gsap) {
+                safeGSAP(btn, { opacity: 0, scale: 0.9, y: 20 }, { 
+                  opacity: 1, scale: 1, y: 0, duration: 0.28, ease: "back.out(1.7)" 
+                });
+              }
+            }
+          } else {
+            if (btn.classList.contains('show')) {
+              btn.classList.remove('show');
+              if (window.gsap) {
+                safeGSAP(btn, null, { opacity: 0, scale: 0.9, y: 20, duration: 0.18, ease: "power2.in" });
+              }
+            }
+          }
+        }
+    
+        window.addEventListener('scroll', throttle(onScroll, 50), { passive: true });
+        onScroll();
+    
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          btn.style.transition = 'transform 0.12s ease';
+          btn.style.transform = 'scale(0.95)';
+          setTimeout(() => { btn.style.transform = ''; btn.style.transition = ''; }, 140);
+    
+          if (window.gsap && window.ScrollToPlugin) {
+            try { gsap.to(window, { duration: 0.8, scrollTo: { y: 0 } }); }
+            catch (err) { smoothScrollTo(0, 800); }
+          } else {
+            smoothScrollTo(0, 800);
+          }
+          btn.blur();
+        });
+    
+        btn.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            btn.click();
+          }
+        });
+      }
+    
+      /* ---------- Lazy load images using IntersectionObserver ---------- */
+      function initLazyImages() {
+        if (!('IntersectionObserver' in window)) return;
+    
+        const images = document.querySelectorAll('img[data-src]');
+        const io = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            const img = entry.target;
+            const src = img.dataset.src;
+            if (src) {
+              img.src = src;
+              img.classList.remove('lazy-load');
+            }
+            observer.unobserve(img);
+          });
+        }, { rootMargin: '0px 0px 120px 0px', threshold: 0.01 });
+    
+        images.forEach(img => {
+          if (!img.src) img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+          io.observe(img);
+        });
+      }
+    
+      /* ---------- ScrollTrigger / GSAP animations ---------- */
+      function initScrollAnimations() {
+        // Hero entrance animations
+        safeGSAP('.hero-title', { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1.2, ease: 'power2.out', delay: 0.2 });
+        safeGSAP('.hero-subtitle', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1, ease: 'power2.out', delay: 0.4 });
+        safeGSAP('.hero-description', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1, ease: 'power2.out', delay: 0.6 });
+        safeGSAP('.cta-buttons', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1, ease: 'power2.out', delay: 0.8 });
+    
+        // Skills header
+        if (document.querySelector('.skills-header')) {
+          ScrollTrigger.create({
+            trigger: '.skills-header',
+            start: 'top 80%',
+            onEnter: () => {
+              safeGSAP('.skills-title', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' });
+              safeGSAP('.skills-subtitle', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, delay: 0.2, ease: 'power2.out' });
+            }
+          });
+        }
+    
+        // Progress title
+        if (document.querySelector('.progress-title')) {
+          ScrollTrigger.create({
+            trigger: '.progress-title',
+            start: 'top 80%',
+            onEnter: () => {
+              safeGSAP('.progress-title', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' });
+            }
+          });
+        }
+    
+        // Progress items
+        gsap.utils.toArray('.progress-item').forEach((item, i) => {
+          ScrollTrigger.create({
+            trigger: item,
+            start: 'top 85%',
+            onEnter: () => {
+              safeGSAP(item, { opacity: 0, y: 30 }, { 
+                opacity: 1, y: 0, duration: 0.8, delay: i * 0.1, ease: 'power2.out' 
+              });
+            }
+          });
+        });
+    
+        // Skill cards
+        gsap.utils.toArray('.skill-card').forEach((card, i) => {
+          ScrollTrigger.create({
+            trigger: card,
+            start: 'top 85%',
+            onEnter: () => {
+              safeGSAP(card, { 
+                opacity: 0, y: 50, scale: 0.95 
+              }, { 
+                opacity: 1, y: 0, scale: 1, 
+                duration: 0.8, delay: i * 0.1, ease: 'back.out(1.7)' 
+              });
+            }
+          });
+        });
+    
+        // Category cards
+        gsap.utils.toArray('.category-card').forEach((card, i) => {
+          ScrollTrigger.create({
+            trigger: card,
+            start: 'top 85%',
+            onEnter: () => {
+              safeGSAP(card, { opacity: 0, y: 30 }, { 
+                opacity: 1, y: 0, duration: 0.8, delay: i * 0.1, ease: 'power2.out' 
+              });
+            }
+          });
+        });
+    
+        // Contact links
+        gsap.utils.toArray('.contact-link').forEach((link, i) => {
+          ScrollTrigger.create({
+            trigger: link,
+            start: 'top 85%',
+            onEnter: () => {
+              safeGSAP(link, { opacity: 0, y: 30 }, { 
+                opacity: 1, y: 0, duration: 0.8, delay: i * 0.1, ease: 'power2.out' 
+              });
+            }
+          });
+        });
+    
+        // Floating elements
+        gsap.utils.toArray('.floating-element').forEach((el, i) => {
+          gsap.to(el, { 
+            y: '-=20px', 
+            rotation: '+=360', 
+            duration: 6 + i * 2, 
+            repeat: -1, 
+            yoyo: true, 
+            ease: 'power2.inOut' 
+          });
+        });
+      }
+    
+      /* ---------- Fallback animations (no GSAP) ---------- */
+      function initFallbackAnimations() {
+        if ('IntersectionObserver' in window) {
+          const obs = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+              }
+            });
+          }, { rootMargin: '0px 0px -80px 0px', threshold: 0.05 });
+    
+          document.querySelectorAll(
+            '.hero-title, .hero-subtitle, .hero-description, ' +
+            '.skills-title, .skills-subtitle, .skill-card, .category-card, ' +
+            '.progress-title, .progress-item, .contact-link, .tool-item'
+          ).forEach(el => obs.observe(el));
+        }
+      }
+    
+      /* ---------- Active nav link updater ---------- */
+      function updateActiveNavLink(targetId = null) {
+        const navLinks = document.querySelectorAll('.nav-link');
+        if (!navLinks.length) return;
+    
+        if (targetId) {
+          navLinks.forEach(l => l.classList.remove('active'));
+          const match = Array.from(navLinks).find(l => 
+            l.getAttribute('href') === targetId || 
+            (targetId === '#hero' && l.getAttribute('href') === 'index.html')
+          );
+          if (match) match.classList.add('active');
+          return;
+        }
+    
+        const sections = document.querySelectorAll('section[id]');
+        let current = 'hero';
+        sections.forEach(section => {
+          const top = section.offsetTop;
+          const h = section.clientHeight;
+          if (window.scrollY >= (top - 200) && window.scrollY < (top + h)) {
+            current = section.getAttribute('id');
+          }
+        });
+    
+        navLinks.forEach(l => {
+          l.classList.remove('active');
+          const href = l.getAttribute('href');
+          if (href === `#${current}` || (current === 'hero' && href === 'index.html')) {
+            l.classList.add('active');
+          }
+        });
+      }
+    
+      window.addEventListener('scroll', throttle(() => updateActiveNavLink(), 120), { passive: true });
+    
+      /* ---------- Boot sequence ---------- */
+      document.addEventListener('DOMContentLoaded', () => {
+        initApp();
+      });
+    
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        setTimeout(initApp, 0);
+      }
+    
+      window.addEventListener('error', (e) => {
+        if (e?.error) console.error('JS Error:', e.error);
+      }, true);
+    
+    })();
+  </script>
+</body>
+</html>

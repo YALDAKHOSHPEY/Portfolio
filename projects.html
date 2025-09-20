@@ -1,0 +1,2056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Yalda Khoshpey – Award-winning Front-End Developer & UI/UX Designer | View my portfolio of breathtaking digital experiences">
+  <title>Yalda Khoshpey - Projects Portfolio</title>
+  
+  <!-- Preload Critical Resources -->
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" as="style">
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style">
+  
+  <!-- Critical CSS -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+  
+  <link rel="icon" type="image/png" href="./images/favicon.ico.png">
+  
+  <style>
+    /* CSS Variables for Theming */
+    :root {
+      /* Light Theme */
+      --bg-primary: #fff;
+      --bg-secondary: #f8fafc;
+      --bg-tertiary: #f1f5f9;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --text-muted: #94a3b8;
+      --border-color: #e2e8f0;
+      --shadow-light: rgba(0, 0, 0, 0.1);
+      --shadow-medium: rgba(0, 0, 0, 0.15);
+      --navbar-bg: rgba(255, 255, 255, 0.95);
+      --navbar-scrolled: rgba(255, 255, 255, 0.98);
+      --navbar-shadow: rgba(0, 0, 0, 0.05);
+      --card-bg: #f8fafc;
+      --card-hover: #fff;
+      --loading-bg: #fff;
+    }
+
+    [data-theme="dark"] {
+      /* Dark Theme */
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-tertiary: #334155;
+      --text-primary: #f1f5f9;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --border-color: #334155;
+      --shadow-light: rgba(0, 0, 0, 0.3);
+      --shadow-medium: rgba(0, 0, 0, 0.4);
+      --navbar-bg: rgba(15, 23, 42, 0.95);
+      --navbar-scrolled: rgba(15, 23, 42, 0.98);
+      --navbar-shadow: rgba(0, 0, 0, 0.2);
+      --card-bg: #1e293b;
+      --card-hover: #334155;
+      --loading-bg: #0f172a;
+    }
+
+    /* Reset and Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      color: var(--text-primary);
+      overflow-x: hidden;
+      background: var(--bg-primary);
+      transition: background-color 0.3s ease, color 0.3s ease;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Loading Screen */
+    .loading-wrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--loading-bg);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.4s ease;
+    }
+
+    .loading-animation {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .loading-circle {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #8B5CF6;
+      animation: pulse 1.4s ease-in-out infinite both;
+    }
+
+    .loading-circle:nth-child(1) { animation-delay: -0.32s; }
+    .loading-circle:nth-child(2) { animation-delay: -0.16s; }
+
+    @keyframes pulse {
+      0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
+      40% { transform: scale(1); opacity: 1; }
+    }
+
+    .loading-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      color: #8B5CF6;
+      font-size: clamp(14px, 2vw, 16px);
+    }
+
+    /* Mobile Overlay */
+    .mobile-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 998;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease;
+    }
+
+    .mobile-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Navigation */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: var(--navbar-bg);
+      backdrop-filter: blur(20px);
+      z-index: 1000;
+      transition: all 0.3s ease;
+      padding: clamp(0.5rem, 2vw, 1rem) 0;
+      box-shadow: 0 2px 20px var(--navbar-shadow);
+      color: var(--text-primary);
+    }
+
+    .navbar.scrolled {
+      background: var(--navbar-scrolled);
+      padding: clamp(0.25rem, 1.5vw, 0.5rem) 0;
+      box-shadow: 0 2px 30px var(--navbar-shadow);
+    }
+
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 clamp(1rem, 4vw, 2rem);
+      gap: 1rem;
+    }
+
+    .logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.5rem, 4vw, 1.8rem);
+      font-weight: 700;
+      color: #8B5CF6;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .logo:hover {
+      color: #7C3AED;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: clamp(1rem, 2vw, 2rem);
+      margin: 0;
+      padding: 0;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-weight: 500;
+      transition: all 0.3s ease;
+      position: relative;
+      padding: 0.5rem 0;
+      white-space: nowrap;
+      font-size: clamp(0.9rem, 1.2vw, 1rem);
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: #8B5CF6;
+    }
+
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: #8B5CF6;
+    }
+
+    /* Theme Toggle Button */
+    .theme-toggle {
+      background: none;
+      border: none;
+      font-size: clamp(1.2rem, 2vw, 1.5rem);
+      color: var(--text-secondary);
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      width: clamp(36px, 5vw, 40px);
+      height: clamp(36px, 5vw, 40px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .theme-toggle:hover {
+      background: var(--border-color);
+      color: #8B5CF6;
+      transform: rotate(15deg);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-shrink: 0;
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: clamp(1.2rem, 2vw, 1.5rem);
+      color: var(--text-secondary);
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+
+    .mobile-menu-btn:hover {
+      background: var(--border-color);
+      color: #8B5CF6;
+    }
+
+    /* Mobile Menu */
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: min(90vw, 300px);
+      height: 100vh;
+      background: var(--bg-primary);
+      z-index: 999;
+      transition: right 0.35s ease;
+      padding: clamp(2rem, 8vw, 5rem) 1.5rem 2rem;
+      box-shadow: -2px 0 20px var(--shadow-light);
+      color: var(--text-primary);
+      overflow-y: auto;
+    }
+
+    .mobile-menu.open {
+      right: 0;
+    }
+
+    .mobile-nav {
+      list-style: none;
+      margin-bottom: 2rem;
+    }
+
+    .mobile-nav-link {
+      display: block;
+      padding: clamp(1rem, 3vw, 1.25rem) 0;
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: clamp(1.1rem, 2.5vw, 1.25rem);
+      font-weight: 500;
+      border-bottom: 1px solid var(--border-color);
+      transition: color 0.3s ease;
+    }
+
+    .mobile-nav-link:hover,
+    .mobile-nav-link.active {
+      color: #8B5CF6;
+    }
+
+    .mobile-theme-toggle {
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border-color);
+      text-align: center;
+    }
+
+    /* Hero Section - Projects Page */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 0 clamp(1rem, 4vw, 2rem);
+      background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 50%, #22C55E 100%);
+      color: white;
+      overflow: hidden;
+    }
+
+    .floating-elements {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .floating-element {
+      position: absolute;
+      width: clamp(3px, 0.5vw, 4px);
+      height: clamp(3px, 0.5vw, 4px);
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+    }
+
+    .floating-element:nth-child(1) {
+      top: 20%;
+      left: 10%;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .floating-element:nth-child(2) {
+      top: 60%;
+      right: 15%;
+      animation: float 8s ease-in-out infinite reverse;
+    }
+
+    .floating-element:nth-child(3) {
+      bottom: 20%;
+      left: 20%;
+      animation: float 7s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+    }
+
+    .hero-content {
+      max-width: min(90vw, 900px);
+      text-align: center;
+      z-index: 2;
+      position: relative;
+      width: 100%;
+    }
+
+    .hero-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.5rem, 7vw, 4.5rem);
+      font-weight: 700;
+      margin-bottom: clamp(0.75rem, 2vw, 1rem);
+      opacity: 0;
+      transform: translateY(50px);
+      line-height: 1.2;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      margin-bottom: clamp(1rem, 3vw, 1.5rem);
+      opacity: 0.9;
+      opacity: 0;
+      transform: translateY(30px);
+      font-weight: 400;
+    }
+
+    .hero-description {
+      font-size: clamp(1rem, 2vw, 1.1rem);
+      margin-bottom: clamp(2rem, 4vw, 2.5rem);
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      opacity: 0;
+      transform: translateY(30px);
+      line-height: 1.7;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: clamp(0.75rem, 2vw, 1rem);
+      justify-content: center;
+      flex-wrap: wrap;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: clamp(0.6rem, 1.5vw, 0.75rem) clamp(1.25rem, 3vw, 1.5rem);
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+      font-size: clamp(0.9rem, 1.2vw, 1rem);
+      white-space: nowrap;
+      flex: 1;
+      min-width: clamp(120px, 20vw, 160px);
+      justify-content: center;
+    }
+
+    .btn-primary {
+      background: white;
+      color: #8B5CF6;
+    }
+
+    .btn-primary:hover {
+      background: #8B5CF6;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: white;
+      border-color: white;
+    }
+
+    .btn-secondary:hover {
+      background: white;
+      color: #8B5CF6;
+      transform: translateY(-2px);
+    }
+
+    /* Projects Section */
+    .projects {
+      padding: clamp(4rem, 8vw, 8rem) clamp(1rem, 4vw, 2rem);
+      background: var(--bg-secondary);
+    }
+
+    .projects-container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .projects-header {
+      text-align: center;
+      margin-bottom: clamp(2rem, 6vw, 4rem);
+    }
+
+    .projects-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      color: var(--text-primary);
+      margin-bottom: clamp(0.75rem, 2vw, 1rem);
+      line-height: 1.2;
+    }
+
+    .projects-subtitle {
+      color: var(--text-secondary);
+      font-size: clamp(1rem, 1.8vw, 1.2rem);
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(clamp(350px, 90vw, 400px), 1fr));
+      gap: clamp(2rem, 5vw, 3rem);
+    }
+
+    .project-card {
+      background: var(--bg-primary);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px var(--shadow-light);
+      transition: all 0.3s ease;
+      opacity: 0;
+      transform: translateY(50px);
+      border: 1px solid var(--border-color);
+      max-width: 100%;
+    }
+
+    .project-card:hover {
+      transform: translateY(-12px);
+      box-shadow: 0 25px 60px var(--shadow-medium);
+    }
+
+    .project-image {
+      position: relative;
+      height: clamp(200px, 30vw, 250px);
+      overflow: hidden;
+    }
+
+    .project-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .project-card:hover .project-image img {
+      transform: scale(1.1);
+    }
+
+    .project-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.95), rgba(236, 72, 153, 0.95));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .project-card:hover .project-overlay {
+      opacity: 1;
+    }
+
+    .project-links {
+      display: flex;
+      gap: clamp(0.75rem, 2vw, 1rem);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .project-link {
+      padding: clamp(0.6rem, 1.5vw, 0.8rem) clamp(1.25rem, 2.5vw, 1.75rem);
+      background: white;
+      color: #8B5CF6;
+      text-decoration: none;
+      border-radius: 25px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      font-size: clamp(0.85rem, 1.2vw, 0.95rem);
+      white-space: nowrap;
+      flex: 1;
+      min-width: 90px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
+    }
+
+    .project-link:hover {
+      background: #8B5CF6;
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+    }
+
+    .project-content {
+      padding: clamp(2rem, 4vw, 2.5rem);
+    }
+
+    .project-content h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+      color: var(--text-primary);
+      margin-bottom: clamp(1rem, 2vw, 1.25rem);
+      line-height: 1.3;
+    }
+
+    .project-content p {
+      color: var(--text-secondary);
+      margin-bottom: clamp(1.5rem, 3vw, 2rem);
+      line-height: 1.7;
+      font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+    }
+
+    .project-tech {
+      display: flex;
+      flex-wrap: wrap;
+      gap: clamp(0.5rem, 1.5vw, 0.75rem);
+      justify-content: center;
+    }
+
+    .tech-tag {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      padding: clamp(0.3rem, 1vw, 0.4rem) clamp(0.75rem, 2vw, 1rem);
+      border-radius: 20px;
+      font-size: clamp(0.75rem, 1.2vw, 0.85rem);
+      font-weight: 500;
+      border: 1px solid var(--border-color);
+    }
+
+    /* Project Categories Filter */
+    .projects-filter {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: clamp(2rem, 4vw, 3rem);
+    }
+
+    .filter-btn {
+      padding: 0.75rem 1.5rem;
+      background: var(--card-bg);
+      color: var(--text-secondary);
+      border: 2px solid var(--border-color);
+      border-radius: 50px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: clamp(0.9rem, 1.2vw, 1rem);
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: #8B5CF6;
+      color: white;
+      border-color: #8B5CF6;
+      transform: translateY(-2px);
+    }
+
+    /* Stats Section */
+    .projects-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin: clamp(3rem, 6vw, 4rem) 0;
+      text-align: center;
+      padding: 2rem 0;
+      border-top: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .stat-item {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .stat-number {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      color: #8B5CF6;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      color: var(--text-secondary);
+      font-size: clamp(0.9rem, 1.5vw, 1rem);
+      font-weight: 500;
+    }
+
+    /* Contact Section */
+    .contact {
+      padding: clamp(4rem, 8vw, 8rem) clamp(1rem, 4vw, 2rem);
+      background: var(--bg-primary);
+      text-align: center;
+    }
+
+    .contact-content {
+      max-width: min(90vw, 800px);
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .contact-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 4vw, 2.5rem);
+      color: var(--text-primary);
+      margin-bottom: clamp(0.75rem, 2vw, 1rem);
+      line-height: 1.2;
+    }
+
+    .contact-subtitle {
+      color: var(--text-secondary);
+      font-size: clamp(1rem, 1.8vw, 1.1rem);
+      margin-bottom: clamp(2rem, 6vw, 4rem);
+      line-height: 1.6;
+    }
+
+    .contact-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(clamp(220px, 80vw, 250px), 1fr));
+      gap: clamp(1.5rem, 4vw, 2rem);
+    }
+
+    .contact-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      padding: clamp(1.5rem, 4vw, 2rem);
+      background: var(--card-bg);
+      border-radius: 20px;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.3s ease;
+      opacity: 0;
+      transform: translateY(30px);
+      border: 1px solid var(--border-color);
+      text-align: center;
+    }
+
+    .contact-link:hover {
+      transform: translateY(-10px);
+      background: var(--card-hover);
+      box-shadow: 0 20px 40px var(--shadow-light);
+    }
+
+    .contact-link i {
+      font-size: clamp(2.5rem, 6vw, 3rem);
+      color: #8B5CF6;
+      margin-bottom: clamp(0.75rem, 2vw, 1rem);
+    }
+
+    .contact-link h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.1rem, 2.2vw, 1.3rem);
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      line-height: 1.3;
+    }
+
+    .contact-link p {
+      color: var(--text-secondary);
+      font-size: clamp(0.85rem, 1.5vw, 0.95rem);
+      margin: 0;
+    }
+
+    /* Footer */
+    .footer {
+      background: #1e293b;
+      color: white;
+      padding: clamp(2rem, 6vw, 3rem) clamp(1rem, 4vw, 2rem) clamp(1rem, 2vw, 1rem);
+    }
+
+    .footer-content {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: clamp(1.5rem, 4vw, 2rem);
+      flex-wrap: wrap;
+      gap: clamp(1rem, 3vw, 2rem);
+    }
+
+    .footer-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.5rem, 3vw, 1.8rem);
+      font-weight: 700;
+      color: #8B5CF6;
+    }
+
+    .social-links {
+      display: flex;
+      gap: clamp(0.75rem, 2vw, 1rem);
+    }
+
+    .social-link {
+      width: clamp(40px, 6vw, 50px);
+      height: clamp(40px, 6vw, 50px);
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+    }
+
+    .social-link:hover {
+      background: #8B5CF6;
+      transform: translateY(-3px);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: clamp(1rem, 3vw, 2rem);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+      font-size: clamp(0.85rem, 1.2vw, 0.95rem);
+    }
+
+    /* Back to Top */
+    .back-to-top {
+      position: fixed;
+      bottom: clamp(1rem, 3vw, 2rem);
+      right: clamp(1rem, 3vw, 2rem);
+      width: clamp(45px, 7vw, 50px);
+      height: clamp(45px, 7vw, 50px);
+      background: #8B5CF6;
+      border: none;
+      border-radius: 50%;
+      color: white;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      z-index: 100;
+      box-shadow: 0 5px 15px rgba(139, 92, 246, 0.3);
+    }
+
+    .back-to-top.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .back-to-top:hover {
+      background: #7C3AED;
+      transform: translateY(-3px);
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* Enhanced Mobile Styles */
+    @media (max-width: 1024px) {
+      .nav-links {
+        gap: 1.5rem;
+      }
+
+      .nav-container {
+        padding: 0 clamp(1rem, 3vw, 1.5rem);
+      }
+
+      .projects-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .nav-actions {
+        gap: 0.5rem;
+      }
+
+      .hero {
+        padding: 0 clamp(0.75rem, 3vw, 1rem);
+        min-height: 100vh;
+      }
+
+      .hero-content {
+        padding: 0 clamp(1rem, 4vw, 2rem);
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .btn {
+        width: 100%;
+        max-width: 280px;
+        justify-content: center;
+      }
+
+      .projects-grid {
+        grid-template-columns: 1fr;
+        gap: clamp(1.5rem, 4vw, 2rem);
+      }
+
+      .projects-filter {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .projects-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+      }
+
+      .contact-links {
+        grid-template-columns: 1fr;
+        gap: clamp(1.5rem, 4vw, 2rem);
+      }
+
+      .footer-top {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.5rem;
+      }
+
+      .nav-container {
+        padding: 0 clamp(0.75rem, 3vw, 1rem);
+      }
+
+      .projects {
+        padding: clamp(2.5rem, 6vw, 4rem) clamp(0.75rem, 3vw, 1rem);
+      }
+
+      .back-to-top {
+        bottom: 1rem;
+        right: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-title {
+        font-size: clamp(1.75rem, 8vw, 2.25rem);
+      }
+
+      .hero-subtitle {
+        font-size: clamp(1rem, 4vw, 1.125rem);
+      }
+
+      .hero-description {
+        font-size: clamp(0.95rem, 3vw, 1rem);
+        padding: 0 0.5rem;
+      }
+
+      .contact-link {
+        padding: clamp(1.25rem, 5vw, 1.5rem);
+      }
+
+      .project-content {
+        padding: clamp(1.25rem, 3vw, 1.5rem);
+      }
+
+      .projects-header {
+        padding: 0 0.5rem;
+      }
+
+      .footer {
+        padding: clamp(1.5rem, 5vw, 2rem) clamp(0.75rem, 3vw, 1rem);
+      }
+
+      .social-links {
+        justify-content: center;
+      }
+
+      .projects-stats {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .nav-container,
+      .hero,
+      .projects,
+      .contact,
+      .footer {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+      }
+
+      .mobile-menu {
+        width: 95vw;
+        padding: 2rem 1rem 1.5rem;
+      }
+
+      .btn {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+      }
+
+      .filter-btn {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+      }
+    }
+
+    /* Animation Classes for Fallback */
+    .animate-in {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+
+    .hero-title.animate-in,
+    .hero-subtitle.animate-in,
+    .hero-description.animate-in,
+    .cta-buttons.animate-in {
+      animation: fadeInUp 0.8s ease forwards;
+    }
+
+    .project-card.animate-in,
+    .contact-link.animate-in,
+    .stat-item.animate-in {
+      animation: fadeInUp 0.8s ease forwards;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* High DPI/Retina Display Support */
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+      .project-image img {
+        image-rendering: -webkit-optimize-contrast;
+      }
+    }
+
+    /* Reduced Motion Support */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+
+      .floating-element {
+        animation: none;
+      }
+    }
+
+    /* Focus Styles for Accessibility */
+    .btn:focus,
+    .nav-link:focus,
+    .theme-toggle:focus,
+    .mobile-menu-btn:focus,
+    .back-to-top:focus,
+    .project-link:focus,
+    .filter-btn:focus,
+    .social-link:focus,
+    .contact-link:focus {
+      outline: 2px solid #8B5CF6;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Faster Loading Screen -->
+  <div class="loading-wrapper" id="loadingWrapper">
+    <div class="loading-animation">
+      <div class="loading-circle"></div>
+      <div class="loading-circle"></div>
+      <div class="loading-circle"></div>
+    </div>
+    <div class="loading-text">Loading Projects...</div>
+  </div>
+
+  <!-- Mobile Overlay -->
+  <div class="mobile-overlay" id="mobileOverlay"></div>
+
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo">Yalda</a>
+      
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html" class="nav-link" data-section="home">Home</a></li>
+        <li><a href="about.html" class="nav-link" data-section="about">About</a></li>
+        <li><a href="#skills" class="nav-link" data-section="skills">Skills</a></li>
+        <li><a href="projects.html" class="nav-link active" data-section="projects">Projects</a></li>
+        <li><a href="#contact" class="nav-link" data-section="contact">Contact</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Toggle dark/light mode">
+          <i class="fas fa-moon"></i>
+        </button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <ul class="mobile-nav">
+      <li><a href="index.html" class="mobile-nav-link" data-section="home">Home</a></li>
+      <li><a href="about.html" class="mobile-nav-link" data-section="about">About</a></li>
+      <li><a href="#skills" class="mobile-nav-link" data-section="skills">Skills</a></li>
+      <li><a href="projects.html" class="mobile-nav-link active" data-section="projects">Projects</a></li>
+      <li><a href="#contact" class="mobile-nav-link" data-section="contact">Contact</a></li>
+    </ul>
+    <div class="mobile-theme-toggle">
+      <button class="theme-toggle" id="mobileThemeToggle" aria-label="Toggle theme" title="Toggle dark/light mode">
+        <i class="fas fa-moon"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Hero Section - Projects Page -->
+  <section class="hero" id="hero">
+    <div class="floating-elements">
+      <div class="floating-element"></div>
+      <div class="floating-element"></div>
+      <div class="floating-element"></div>
+    </div>
+    
+    <div class="hero-content">
+      <h1 class="hero-title">My Projects</h1>
+      <p class="hero-subtitle">Crafting Digital Excellence</p>
+      <p class="hero-description">
+        Explore my portfolio of award-winning projects that showcase the perfect blend of cutting-edge technology 
+        and beautiful design. Each project tells a story of innovation, creativity, and technical mastery.
+      </p>
+      <div class="cta-buttons">
+        <a href="#projects" class="btn btn-primary">
+          <i class="fas fa-rocket"></i>
+          View Projects
+        </a>
+        <a href="#contact" class="btn btn-secondary">
+          <i class="fas fa-envelope"></i>
+          Let's Collaborate
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section class="projects" id="projects">
+    <div class="projects-container">
+      <!-- Project Stats -->
+      <div class="projects-stats">
+        <div class="stat-item">
+          <span class="stat-number" data-target="25">25+</span>
+          <span class="stat-label">Projects Completed</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number" data-target="12">12+</span>
+          <span class="stat-label">Happy Clients</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number" data-target="5000">5K+</span>
+          <span class="stat-label">Hours of Work</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number" data-target="98">98%</span>
+          <span class="stat-label">Client Satisfaction</span>
+        </div>
+      </div>
+
+      <div class="projects-header">
+        <h2 class="projects-title">Featured Portfolio</h2>
+        <p class="projects-subtitle">Selected projects that demonstrate my expertise in modern web development and design</p>
+      </div>
+
+      <!-- Filter Buttons -->
+      <div class="projects-filter">
+        <button class="filter-btn active" data-filter="all">All Projects</button>
+        <button class="filter-btn" data-filter="ecommerce">E-Commerce</button>
+        <button class="filter-btn" data-filter="dashboard">Dashboards</button>
+        <button class="filter-btn" data-filter="cms">CMS</button>
+        <button class="filter-btn" data-filter="mobile">Mobile Apps</button>
+      </div>
+      
+      <div class="projects-grid" id="projectsGrid">
+        <!-- Project 1: E-Commerce Platform -->
+        <div class="project-card" data-category="ecommerce">
+          <div class="project-image">
+            <img src="https://via.placeholder.com/500x280/8B5CF6/ffffff?text=ShopVista" 
+                 alt="ShopVista E-Commerce Platform" loading="lazy">
+            <div class="project-overlay">
+              <div class="project-links">
+                <a href="https://shopvista-demo.vercel.app" class="project-link" target="_blank" rel="noopener">
+                  <i class="fas fa-external-link-alt"></i> Live Demo
+                </a>
+                <a href="https://github.com/YALDAKHOSHPEY/shopvista" class="project-link" target="_blank" rel="noopener">
+                  <i class="fab fa-github"></i> Source Code
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="project-content">
+            <h3>ShopVista - Premium E-Commerce</h3>
+            <p>
+              A full-stack e-commerce platform built with Next.js 14 and TypeScript. Features real-time inventory 
+              management, Stripe payments, advanced search with Algolia, and PWA capabilities for offline shopping.
+            </p>
+            <div class="project-tech">
+              <span class="tech-tag">Next.js 14</span>
+              <span class="tech-tag">TypeScript</span>
+              <span class="tech-tag">Stripe</span>
+              <span class="tech-tag">Prisma</span>
+              <span class="tech-tag">Tailwind CSS</span>
+              <span class="tech-tag">Algolia</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 2: Analytics Dashboard -->
+        <div class="project-card" data-category="dashboard">
+          <div class="project-image">
+            <img src="https://via.placeholder.com/500x280/EC4899/ffffff?text=DataFlow" 
+                 alt="DataFlow Analytics Dashboard" loading="lazy">
+            <div class="project-overlay">
+              <div class="project-links">
+                <a href="https://dataflow-analytics.netlify.app" class="project-link" target="_blank" rel="noopener">
+                  <i class="fas fa-external-link-alt"></i> Live Demo
+                </a>
+                <a href="https://github.com/YALDAKHOSHPEY/dataflow-dashboard" class="project-link" target="_blank" rel="noopener">
+                  <i class="fab fa-github"></i> Source Code
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="project-content">
+            <h3>DataFlow - Analytics Dashboard</h3>
+            <p>
+              Interactive real-time analytics dashboard with animated charts, drag-and-drop widgets, and AI-powered 
+              insights. Built with Vue 3 Composition API and integrates with multiple data sources including Google Analytics.
+            </p>
+            <div class="project-tech">
+              <span class="tech-tag">Vue 3</span>
+              <span class="tech-tag">Pinia</span>
+              <span class="tech-tag">D3.js</span>
+              <span class="tech-tag">Chart.js</span>
+              <span class="tech-tag">Framer Motion</span>
+              <span class="tech-tag">Firebase</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 3: Headless CMS -->
+        <div class="project-card" data-category="cms">
+          <div class="project-image">
+            <img src="https://via.placeholder.com/500x280/22C55E/ffffff?text=ContentForge" 
+                 alt="ContentForge Headless CMS" loading="lazy">
+            <div class="project-overlay">
+              <div class="project-links">
+                <a href="https://contentforge-cms.vercel.app" class="project-link" target="_blank" rel="noopener">
+                  <i class="fas fa-external-link-alt"></i> Live Demo
+                </a>
+                <a href="https://github.com/YALDAKHOSHPEY/contentforge" class="project-link" target="_blank" rel="noopener">
+                  <i class="fab fa-github"></i> Source Code
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="project-content">
+            <h3>ContentForge - Headless CMS</h3>
+            <p>
+              Modern headless CMS with GraphQL API, visual content builder, and multi-language support. Features 
+              collaborative editing, version control, and seamless integration with any frontend framework.
+            </p>
+            <div class="project-tech">
+              <span class="tech-tag">Next.js</span>
+              <span class="tech-tag">GraphQL</span>
+              <span class="tech-tag">Strapi</span>
+              <span class="tech-tag">PostgreSQL</span>
+              <span class="tech-tag">React Hook Form</span>
+              <span class="tech-tag">i18n</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 4: Mobile Banking App -->
+        <div class="project-card" data-category="mobile">
+          <div class="project-image">
+            <img src="https://via.placeholder.com/500x280/F59E0B/ffffff?text=FinFlow" 
+                 alt="FinFlow Mobile Banking App" loading="lazy">
+            <div class="project-overlay">
+              <div class="project-links">
+                <a href="https://finflow-mobile.vercel.app" class="project-link" target="_blank" rel="noopener">
+                  <i class="fas fa-external-link-alt"></i> Live Demo
+                </a>
+                <a href="https://github.com/YALDAKHOSHPEY/finflow-mobile" class="project-link" target="_blank" rel="noopener">
+                  <i class="fab fa-github"></i> Source Code
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="project-content">
+            <h3>FinFlow - Mobile Banking</h3>
+            <p>
+              Cross-platform mobile banking application with biometric authentication, real-time notifications, 
+              and advanced security features. Built with React Native and integrates with major payment gateways.
+            </p>
+            <div class="project-tech">
+              <span class="tech-tag">React Native</span>
+              <span class="tech-tag">Expo</span>
+              <span class="tech-tag">Firebase</span>
+              <span class="tech-tag">Stripe</span>
+              <span class="tech-tag">Redux Toolkit</span>
+              <span class="tech-tag">React Navigation</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 5: SaaS Landing Page -->
+        <div class="project-card" data-category="ecommerce">
+          <div class="project-image">
+            <img src="https://via.placeholder.com/500x280/06B6D4/ffffff?text=GrowthHub" 
+                 alt="GrowthHub SaaS Landing Page" loading="lazy">
+            <div class="project-overlay">
+              <div class="project-links">
+                <a href="https://growthhub-landing.vercel.app" class="project-link" target="_blank" rel="noopener">
+                  <i class="fas fa-external-link-alt"></i> Live Demo
+                </a>
+                <a href="https://github.com/YALDAKHOSHPEY/growthhub" class="project-link" target="_blank" rel="noopener">
+                  <i class="fab fa-github"></i> Source Code
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="project-content">
+            <h3>GrowthHub - SaaS Landing</h3>
+            <p>
+              High-converting SaaS landing page with animated scroll effects, A/B testing integration, and 
+              performance-optimized animations. Built with Framer Motion and optimized for SEO and conversion tracking.
+            </p>
+            <div class="project-tech">
+              <span class="tech-tag">React</span>
+              <span class="tech-tag">Framer Motion</span>
+              <span class="tech-tag">GSAP</span>
+              <span class="tech-tag">Vercel</span>
+              <span class="tech-tag">Google Analytics</span>
+              <span class="tech-tag">Hotjar</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 6: Portfolio Website -->
+        <div class="project-card" data-category="dashboard">
+          <div class="project-image">
+            <img src="https://via.placeholder.com/500x280/A855F7/ffffff?text=Portfolio" 
+                 alt="Developer Portfolio Website" loading="lazy">
+            <div class="project-overlay">
+              <div class="project-links">
+                <a href="https://yalda-khoshpey-portfolio.vercel.app" class="project-link" target="_blank" rel="noopener">
+                  <i class="fas fa-external-link-alt"></i> Live Demo
+                </a>
+                <a href="https://github.com/YALDAKHOSHPEY/portfolio" class="project-link" target="_blank" rel="noopener">
+                  <i class="fab fa-github"></i> Source Code
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="project-content">
+            <h3>Developer Portfolio</h3>
+            <p>
+              This very portfolio website! A modern, responsive developer portfolio built with the latest web 
+              technologies. Features smooth animations, dark/light mode, and optimized performance across all devices.
+            </p>
+            <div class="project-tech">
+              <span class="tech-tag">HTML5</span>
+              <span class="tech-tag">CSS3</span>
+              <span class="tech-tag">JavaScript</span>
+              <span class="tech-tag">GSAP</span>
+              <span class="tech-tag">Web Vitals</span>
+              <span class="tech-tag">PWA</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact" id="contact">
+    <div class="contact-content">
+      <h2 class="contact-title">Ready to Start Your Project?</h2>
+      <p class="contact-subtitle">
+        Let's discuss your vision and create something extraordinary together. I'm excited to bring your ideas to life!
+      </p>
+      
+      <div class="contact-links">
+        <a href="mailto:hello@yalda.dev" class="contact-link">
+          <i class="fas fa-envelope"></i>
+          <h3>Start a Conversation</h3>
+          <p>hello@yalda.dev</p>
+        </a>
+        
+        <a href="https://linkedin.com/in/yalda-khoshpey" class="contact-link" target="_blank" rel="noopener">
+          <i class="fab fa-linkedin"></i>
+          <h3>Professional Network</h3>
+          <p>Connect on LinkedIn</p>
+        </a>
+        
+        <a href="https://github.com/YALDAKHOSHPEY" class="contact-link" target="_blank" rel="noopener">
+          <i class="fab fa-github"></i>
+          <h3>Code Repository</h3>
+          <p>Explore my GitHub</p>
+        </a>
+        
+        <a href="https://twitter.com/yalda_dev" class="contact-link" target="_blank" rel="noopener">
+          <i class="fab fa-twitter"></i>
+          <h3>Follow Updates</h3>
+          <p>Latest news & insights</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-top">
+        <div class="footer-logo">Yalda Khoshpey</div>
+        <div class="social-links">
+          <a href="https://github.com/YALDAKHOSHPEY" class="social-link" target="_blank" rel="noopener">
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="https://linkedin.com/in/yalda-khoshpey" class="social-link" target="_blank" rel="noopener">
+            <i class="fab fa-linkedin"></i>
+          </a>
+          <a href="https://twitter.com/yalda_dev" class="social-link" target="_blank" rel="noopener">
+            <i class="fab fa-twitter"></i>
+          </a>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2025 Yalda Khoshpey. Crafting digital excellence with passion and precision. 🚀</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Enhanced Back to Top Button -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top" title="Back to top">
+    <i class="fas fa-arrow-up" aria-hidden="true"></i>
+    <span class="sr-only">Back to top</span>
+  </button>
+
+  <script>
+    /**
+     * Projects Portfolio Page Script
+     * Enhanced with project filtering, animated counters, and improved interactions
+     */
+    
+    (function () {
+      'use strict';
+    
+      /* ---------- Safe GSAP plugin registration ---------- */
+      if (window.gsap && typeof window.gsap.registerPlugin === 'function') {
+        if (window.ScrollTrigger) {
+          try { gsap.registerPlugin(ScrollTrigger); } catch (e) { console.warn('ScrollTrigger register failed', e); }
+        }
+        if (window.ScrollToPlugin) {
+          try { gsap.registerPlugin(ScrollToPlugin); } catch (e) { console.warn('ScrollToPlugin register failed', e); }
+        }
+      }
+    
+      /* ---------- Utility: throttle ---------- */
+      function throttle(fn, wait = 16) {
+        let inThrottle = false;
+        return function (...args) {
+          if (!inThrottle) {
+            fn.apply(this, args);
+            inThrottle = true;
+            setTimeout(() => (inThrottle = false), wait);
+          }
+        };
+      }
+    
+      /* ---------- Utility: safeGSAP wrapper ---------- */
+      function safeGSAP(target, fromVars, toVars) {
+        if (!window.gsap) return false;
+        try {
+          if (fromVars) {
+            gsap.fromTo(target, fromVars, toVars);
+          } else {
+            gsap.to(target, toVars);
+          }
+          return true;
+        } catch (err) {
+          console.warn('GSAP animation failed:', err);
+          return false;
+        }
+      }
+    
+      /* ---------- Theme Management ---------- */
+      function initTheme() {
+        const themeToggle = document.getElementById('themeToggle');
+        const mobileThemeToggle = document.getElementById('mobileThemeToggle');
+        const html = document.documentElement;
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        
+        // Set initial theme
+        html.setAttribute('data-theme', currentTheme);
+        updateThemeIcon(currentTheme);
+        
+        function updateThemeIcon(theme) {
+          const icon = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+          if (themeToggle) themeToggle.querySelector('i').className = icon;
+          if (mobileThemeToggle) mobileThemeToggle.querySelector('i').className = icon;
+        }
+        
+        function toggleTheme() {
+          const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+          html.setAttribute('data-theme', newTheme);
+          localStorage.setItem('theme', newTheme);
+          updateThemeIcon(newTheme);
+          
+          // Smooth transition for body background
+          if (window.gsap) {
+            safeGSAP('body', null, { duration: 0.3, ease: "power2.inOut" });
+          }
+          
+          console.info(`🌙 Theme switched to: ${newTheme}`);
+        }
+        
+        if (themeToggle) {
+          themeToggle.addEventListener('click', toggleTheme);
+        }
+        
+        if (mobileThemeToggle) {
+          mobileThemeToggle.addEventListener('click', toggleTheme);
+        }
+        
+        // Keyboard accessibility
+        [themeToggle, mobileThemeToggle].forEach(btn => {
+          if (btn) {
+            btn.addEventListener('keydown', (e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleTheme();
+              }
+            });
+          }
+        });
+      }
+    
+      /* ---------- Smooth scroll with fallbacks ---------- */
+      function smoothScrollTo(y, duration = 1000) {
+        // Use GSAP ScrollToPlugin when available
+        if (window.gsap && window.ScrollToPlugin) {
+          try {
+            gsap.to(window, { duration: duration / 1000, scrollTo: { y, autoKill: true }, ease: "power2.inOut" });
+            return;
+          } catch (err) {
+            console.warn('GSAP ScrollTo failed, falling back', err);
+          }
+        }
+    
+        // Native smooth scroll
+        if ('scrollBehavior' in document.documentElement.style) {
+          window.scrollTo({ top: y, behavior: 'smooth' });
+          return;
+        }
+    
+        // Polyfill for older browsers (easeOutCubic)
+        const start = window.pageYOffset;
+        const distance = y - start;
+        const startTime = performance.now();
+    
+        function animation(now) {
+          const elapsed = now - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          window.scrollTo(0, Math.round(start + distance * eased));
+          if (elapsed < duration) requestAnimationFrame(animation);
+        }
+        requestAnimationFrame(animation);
+      }
+    
+      /* ---------- DOM elements (resolved on init) ---------- */
+      let elements = {};
+    
+      /* ---------- Animated Counter Function ---------- */
+      function animateCounters() {
+        const counters = document.querySelectorAll('.stat-number[data-target]');
+        
+        function updateCounter(counter) {
+          const target = parseInt(counter.getAttribute('data-target'));
+          const duration = 2000; // 2 seconds
+          const increment = target / (duration / 16); // ~60fps
+          let current = 0;
+          
+          const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+              current = target;
+              clearInterval(timer);
+            }
+            counter.textContent = Math.floor(current) + (target > 100 ? 'K' : '%');
+          }, 16);
+        }
+        
+        counters.forEach(counter => {
+          if (window.IntersectionObserver) {
+            const observer = new IntersectionObserver((entries) => {
+              entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                  updateCounter(entry.target);
+                  observer.unobserve(entry.target);
+                }
+              });
+            });
+            observer.observe(counter);
+          } else {
+            // Fallback: animate on load
+            updateCounter(counter);
+          }
+        });
+      }
+    
+      /* ---------- Project Filter Functionality ---------- */
+      function initProjectFilter() {
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const projectCards = document.querySelectorAll('.project-card');
+        
+        filterBtns.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const filterValue = btn.getAttribute('data-filter');
+            
+            // Update active button
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // Filter projects
+            projectCards.forEach(card => {
+              const category = card.getAttribute('data-category');
+              
+              if (filterValue === 'all' || category === filterValue) {
+                if (window.gsap) {
+                  safeGSAP(card, { opacity: 0, y: 30, scale: 0.95 }, { 
+                    opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'back.out(1.7)' 
+                  });
+                } else {
+                  card.style.opacity = '1';
+                  card.style.transform = 'translateY(0)';
+                  card.classList.add('animate-in');
+                }
+                card.style.display = 'block';
+              } else {
+                if (window.gsap) {
+                  safeGSAP(card, null, { opacity: 0, y: 30, scale: 0.95, duration: 0.3 });
+                } else {
+                  card.style.opacity = '0';
+                  card.style.transform = 'translateY(30px)';
+                }
+                card.style.display = 'none';
+              }
+            });
+          });
+        });
+      }
+    
+      /* ---------- Initialize App ---------- */
+      function initApp() {
+        console.info('🚀 Initializing projects portfolio app');
+    
+        // Resolve elements
+        elements = {
+          loadingWrapper: document.getElementById('loadingWrapper'),
+          navbar: document.getElementById('navbar'),
+          navLinks: document.querySelectorAll('.nav-link'),
+          mobileMenuBtn: document.getElementById('mobileMenuBtn'),
+          mobileMenu: document.getElementById('mobileMenu'),
+          mobileOverlay: document.getElementById('mobileOverlay'),
+          backToTop: document.getElementById('backToTop')
+        };
+    
+        // Initialize theme first (affects all styling)
+        initTheme();
+    
+        // Start loading handler
+        handleLoadingScreen();
+    
+        // Initialize back-to-top
+        initBackToTop();
+    
+        // Init mobile menu
+        initMobileMenu();
+    
+        // Init navigation smooth scroll
+        initNavSmoothScroll();
+    
+        // Init project-specific features
+        initProjectFilter();
+        animateCounters();
+    
+        // Init lazy images
+        initLazyImages();
+    
+        // If GSAP + ScrollTrigger exist, init scroll animations; otherwise fallback
+        if (window.gsap && window.ScrollTrigger) {
+          initScrollAnimations();
+        } else {
+          initFallbackAnimations();
+        }
+    
+        // Navbar scroll behavior (throttled)
+        initNavbarScroll();
+    
+        console.info('✅ Projects portfolio app initialized successfully');
+      }
+    
+      /* ---------- Loading screen ---------- */
+      function handleLoadingScreen() {
+        const wrap = elements.loadingWrapper;
+        if (!wrap) return;
+    
+        // Fade out quickly then call other inits
+        if (window.gsap) {
+          safeGSAP(wrap, null, {
+            opacity: 0, duration: 0.4, ease: "power2.inOut",
+            onComplete: () => { wrap.style.display = 'none'; }
+          });
+        } else {
+          wrap.style.transition = 'opacity 0.4s ease';
+          wrap.style.opacity = '0';
+          setTimeout(() => { wrap.style.display = 'none'; }, 500);
+        }
+      }
+    
+      /* ---------- Navbar show/hide on scroll ---------- */
+      function initNavbarScroll() {
+        let lastY = window.scrollY || 0;
+        const navbar = () => elements.navbar;
+        function update() {
+          const current = window.scrollY;
+          if (!navbar()) return;
+    
+          // scrolled class
+          if (current > 100) navbar().classList.add('scrolled');
+          else navbar().classList.remove('scrolled');
+    
+          // hide/show based on direction
+          if (current > lastY && current > 120) {
+            safeGSAP(navbar(), null, { y: -100, duration: 0.25, ease: "power2.out" });
+          } else {
+            safeGSAP(navbar(), null, { y: 0, duration: 0.25, ease: "power2.out" });
+          }
+          lastY = current;
+        }
+        window.addEventListener('scroll', throttle(() => requestAnimationFrame(update), 16), { passive: true });
+      }
+    
+      /* ---------- Mobile menu ---------- */
+      function initMobileMenu() {
+        const btn = elements.mobileMenuBtn;
+        const menu = elements.mobileMenu;
+        const overlay = elements.mobileOverlay;
+    
+        if (!btn || !menu || !overlay) return;
+    
+        function openMenu() {
+          menu.classList.add('open');
+          overlay.classList.add('show');
+          document.body.style.overflow = 'hidden';
+          safeGSAP(menu, { x: '100%' }, { x: 0, duration: 0.35, ease: "power2.out" });
+        }
+    
+        function closeMenu() {
+          safeGSAP(menu, null, { x: '100%', duration: 0.28, ease: "power2.in" });
+          menu.classList.remove('open');
+          overlay.classList.remove('show');
+          document.body.style.overflow = 'auto';
+        }
+    
+        btn.addEventListener('click', (e) => { e.stopPropagation(); openMenu(); });
+        overlay.addEventListener('click', (e) => { e.stopPropagation(); closeMenu(); });
+    
+        // Close when a mobile nav link is clicked
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+          link.addEventListener('click', () => closeMenu());
+        });
+    
+        // Close on Escape
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && menu.classList.contains('open')) closeMenu();
+        });
+      }
+    
+      /* ---------- Smooth scroll for nav links ---------- */
+      function initNavSmoothScroll() {
+        const allLinks = document.querySelectorAll('a[href^="#"]');
+        allLinks.forEach(anchor => {
+          anchor.addEventListener('click', function (e) {
+            const href = this.getAttribute('href');
+            if (!href || href === '#' || href === '#!') return;
+            
+            if (href.startsWith('#')) {
+              e.preventDefault();
+              if (href === '#home' || href === 'index.html') {
+                smoothScrollTo(0, 800);
+                updateActiveNavLink('#hero');
+                return;
+              }
+              const target = document.querySelector(href);
+              if (target) {
+                const targetY = target.getBoundingClientRect().top + window.scrollY - 80;
+                smoothScrollTo(targetY, 1000);
+                updateActiveNavLink(href);
+              }
+              // close mobile menu if open
+              if (elements.mobileMenu && elements.mobileMenu.classList.contains('open')) {
+                elements.mobileMenu.classList.remove('open');
+                elements.mobileOverlay.classList.remove('show');
+                document.body.style.overflow = 'auto';
+              }
+            }
+          });
+        });
+      }
+    
+      /* ---------- Back to Top ---------- */
+      function initBackToTop() {
+        const btn = elements.backToTop;
+        if (!btn) return;
+    
+        const SHOW_THRESHOLD = 300;
+    
+        function onScroll() {
+          const scrollY = window.scrollY;
+          if (scrollY > SHOW_THRESHOLD) {
+            if (!btn.classList.contains('show')) {
+              btn.classList.add('show');
+              if (window.gsap) {
+                safeGSAP(btn, { opacity: 0, scale: 0.9, y: 20 }, { 
+                  opacity: 1, scale: 1, y: 0, duration: 0.28, ease: "back.out(1.7)" 
+                });
+              }
+            }
+          } else {
+            if (btn.classList.contains('show')) {
+              btn.classList.remove('show');
+              if (window.gsap) {
+                safeGSAP(btn, null, { opacity: 0, scale: 0.9, y: 20, duration: 0.18, ease: "power2.in" });
+              }
+            }
+          }
+        }
+    
+        window.addEventListener('scroll', throttle(onScroll, 50), { passive: true });
+        onScroll();
+    
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          btn.style.transition = 'transform 0.12s ease';
+          btn.style.transform = 'scale(0.95)';
+          setTimeout(() => { btn.style.transform = ''; btn.style.transition = ''; }, 140);
+    
+          if (window.gsap && window.ScrollToPlugin) {
+            try { gsap.to(window, { duration: 0.8, scrollTo: { y: 0 } }); }
+            catch (err) { smoothScrollTo(0, 800); }
+          } else {
+            smoothScrollTo(0, 800);
+          }
+          btn.blur();
+        });
+    
+        btn.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            btn.click();
+          }
+        });
+      }
+    
+      /* ---------- Lazy load images using IntersectionObserver ---------- */
+      function initLazyImages() {
+        if (!('IntersectionObserver' in window)) return;
+    
+        const images = document.querySelectorAll('img[data-src]');
+        const io = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            const img = entry.target;
+            const src = img.dataset.src;
+            if (src) {
+              img.src = src;
+              img.classList.remove('lazy-load');
+            }
+            observer.unobserve(img);
+          });
+        }, { rootMargin: '0px 0px 120px 0px', threshold: 0.01 });
+    
+        images.forEach(img => {
+          if (!img.src) img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+          io.observe(img);
+        });
+      }
+    
+      /* ---------- ScrollTrigger / GSAP animations ---------- */
+      function initScrollAnimations() {
+        // Hero entrance animations
+        safeGSAP('.hero-title', { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1.2, ease: 'power2.out', delay: 0.2 });
+        safeGSAP('.hero-subtitle', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1, ease: 'power2.out', delay: 0.4 });
+        safeGSAP('.hero-description', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1, ease: 'power2.out', delay: 0.6 });
+        safeGSAP('.cta-buttons', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 1, ease: 'power2.out', delay: 0.8 });
+    
+        // Stats section
+        if (document.querySelector('.projects-stats')) {
+          ScrollTrigger.create({
+            trigger: '.projects-stats',
+            start: 'top 80%',
+            onEnter: () => {
+              gsap.utils.toArray('.stat-item').forEach((item, i) => {
+                safeGSAP(item, { opacity: 0, y: 30 }, { 
+                  opacity: 1, y: 0, duration: 0.8, delay: i * 0.1, ease: 'power2.out' 
+                });
+              });
+            }
+          });
+        }
+    
+        // Project cards staggered animation
+        if (window.ScrollTrigger) {
+          gsap.utils.toArray('.project-card').forEach((card, i) => {
+            ScrollTrigger.create({
+              trigger: card,
+              start: 'top 85%',
+              onEnter: () => safeGSAP(card, { 
+                opacity: 0, y: 50, scale: 0.95 
+              }, { 
+                opacity: 1, y: 0, scale: 1, 
+                duration: 0.8, delay: i * 0.1, ease: 'back.out(1.7)' 
+              })
+            });
+          });
+        }
+    
+        // Contact links
+        gsap.utils.toArray('.contact-link').forEach((link, i) => {
+          ScrollTrigger.create({
+            trigger: link,
+            start: 'top 85%',
+            onEnter: () => safeGSAP(link, { opacity: 0, y: 30 }, { 
+              opacity: 1, y: 0, duration: 0.8, delay: i * 0.1, ease: 'power2.out' 
+            })
+          });
+        });
+    
+        // Floating elements
+        gsap.utils.toArray('.floating-element').forEach((el, i) => {
+          gsap.to(el, { 
+            y: '-=20px', 
+            rotation: '+=360', 
+            duration: 6 + i * 2, 
+            repeat: -1, 
+            yoyo: true, 
+            ease: 'power2.inOut' 
+          });
+        });
+      }
+    
+      /* ---------- Fallback animations (no GSAP) ---------- */
+      function initFallbackAnimations() {
+        if ('IntersectionObserver' in window) {
+          const obs = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('animate-in');
+              }
+            });
+          }, { rootMargin: '0px 0px -80px 0px', threshold: 0.05 });
+    
+          document.querySelectorAll('.hero-title, .hero-subtitle, .hero-description, .project-card, .contact-link, .stat-item')
+            .forEach(el => obs.observe(el));
+        }
+      }
+    
+      /* ---------- Active nav link updater ---------- */
+      function updateActiveNavLink(targetId = null) {
+        const navLinks = document.querySelectorAll('.nav-link');
+        if (!navLinks.length) return;
+    
+        if (targetId) {
+          navLinks.forEach(l => l.classList.remove('active'));
+          const match = Array.from(navLinks).find(l => 
+            l.getAttribute('href') === targetId || 
+            (targetId === '#hero' && l.getAttribute('href') === 'index.html')
+          );
+          if (match) match.classList.add('active');
+          return;
+        }
+    
+        // scroll-based detection
+        const sections = document.querySelectorAll('section[id]');
+        let current = 'hero';
+        sections.forEach(section => {
+          const top = section.offsetTop;
+          const h = section.clientHeight;
+          if (window.scrollY >= (top - 200) && window.scrollY < (top + h)) {
+            current = section.getAttribute('id');
+          }
+        });
+    
+        navLinks.forEach(l => {
+          l.classList.remove('active');
+          const href = l.getAttribute('href');
+          if (href === `#${current}` || (current === 'hero' && href === 'index.html')) {
+            l.classList.add('active');
+          }
+        });
+      }
+    
+      // Update active nav on scroll (throttled)
+      window.addEventListener('scroll', throttle(() => updateActiveNavLink(), 120), { passive: true });
+    
+      /* ---------- Boot sequence: DOMContentLoaded ---------- */
+      document.addEventListener('DOMContentLoaded', () => {
+        initApp();
+      });
+    
+      // Safety: ensure init if load fired before DOMContentLoaded
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        setTimeout(initApp, 0);
+      }
+    
+      /* ---------- Global error logging ---------- */
+      window.addEventListener('error', (e) => {
+        if (e?.error) console.error('JS Error:', e.error);
+      }, true);
+    
+    })();
+  </script>
+</body>
+</html>

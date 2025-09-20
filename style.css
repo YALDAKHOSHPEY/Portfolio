@@ -1,0 +1,751 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  overflow: hidden;
+  height: 100vh;
+  background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #333;
+  perspective: 1000px;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  perspective: 1200px;
+  transform-style: preserve-3d;
+}
+
+.scene {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 1.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.room {
+  position: absolute;
+  width: 1000px;
+  height: 700px;
+  transform-style: preserve-3d;
+  transform: translate3d(-50%, -50%, -500px) rotateX(5deg);
+  top: 50%;
+  left: 50%;
+  transition: transform 1.2s ease-out;
+}
+
+.wall {
+  position: absolute;
+  background: rgba(255, 253, 245, 0.92);
+  border: 1px solid #e0d6b9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+}
+
+.back-wall {
+  width: 1000px;
+  height: 700px;
+  transform: translate3d(0, 0, -500px);
+  background: linear-gradient(to bottom, #f9f7ed, #f2eed9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.left-wall {
+  width: 1000px;
+  height: 700px;
+  transform: translate3d(-500px, 0, 0) rotateY(90deg);
+  background: linear-gradient(to right, #e8e2cb, #f2eed9);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-content: space-around;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.right-wall {
+  width: 1000px;
+  height: 700px;
+  transform: translate3d(500px, 0, 0) rotateY(-90deg);
+  background: linear-gradient(to left, #e8e2cb, #f2eed9);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-content: space-around;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.floor {
+  width: 1000px;
+  height: 1000px;
+  transform: translate3d(0, 350px, 0) rotateX(90deg);
+  background: 
+      linear-gradient(45deg, #c4a97c 25%, transparent 25%, transparent 75%, #c4a97c 75%),
+      linear-gradient(45deg, #c4a97c 25%, #d6b98a 25%, #d6b98a 75%, #c4a97c 75%);
+  background-size: 100px 100px;
+  background-position: 0 0, 50px 50px;
+  margin-top: -150px;
+}
+
+.ceiling {
+  width: 1000px;
+  height: 1000px;
+  transform: translate3d(0, -350px, 0) rotateX(90deg);
+  background: 
+      repeating-linear-gradient(45deg, #f0e6d8, #f0e6d8 10px, #e8dcc8 10px, #e8dcc8 20px);
+  margin-top: -1000px;
+}
+
+.door-frame {
+  position: absolute;
+  width: 420px;
+  height: 620px;
+  background: linear-gradient(to right, #3b2f1a, #2e2414);
+  border: 8px solid #1f1a10;
+  border-radius: 14px;
+  transform: translate3d(0, 50px, 5px);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 0, 0, 0.3);
+  z-index: 8;
+}
+
+.door {
+  position: absolute;
+  width: 400px;
+  height: 600px;
+  background: linear-gradient(to right, #4a2c1f, #3b2318);
+  border: 6px solid #2e1c12;
+  border-radius: 10px;
+  transform-style: preserve-3d;
+  transform-origin: left;
+  transition: transform 1.8s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 10px 0 25px rgba(0, 0, 0, 0.5);
+}
+
+.door:hover {
+  box-shadow: 15px 0 35px rgba(0, 0, 0, 0.6);
+}
+
+.door-texture {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: 
+      linear-gradient(
+          0deg,
+          transparent 0%,
+          rgba(0, 0, 0, 0.1) 2%,
+          transparent 4%
+      );
+  background-size: 10px 10px;
+  opacity: 0.4;
+}
+
+.door-knob {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  width: 25px;
+  height: 25px;
+  background: radial-gradient(circle, #d4af37, #b8860b);
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+  transition: transform 0.3s;
+}
+
+.door:hover .door-knob {
+  transform: scale(1.1);
+}
+
+.door.open {
+  transform: rotateY(-110deg);
+}
+
+.door-glow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 70% 50%, rgba(255, 215, 0, 0.3) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 1s;
+  pointer-events: none;
+}
+
+.door.open .door-glow {
+  opacity: 1;
+}
+
+.door-passage {
+  position: absolute;
+  width: 400px;
+  height: 600px;
+  background: linear-gradient(to bottom, #000000, #1a1a2e);
+  border-radius: 10px;
+  transform: translate3d(0, 50px, -100px);
+  opacity: 0;
+  transition: opacity 1s, transform 1s;
+  z-index: 5;
+  box-shadow: 0 0 40px rgba(255, 215, 0, 0.3);
+}
+
+.door-passage.open {
+  opacity: 1;
+  transform: translate3d(0, 50px, -50px);
+}
+
+.passage-glow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, rgba(255, 215, 0, 0.2) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+.door-passage.open .passage-glow {
+  opacity: 1;
+}
+
+.certificate-frame {
+  width: 200px;
+  height: 150px;
+  background: #f5f5f5;
+  border: 8px solid #8b6b46;
+  border-radius: 8px;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition: transform 0.5s, box-shadow 0.5s;
+  cursor: pointer;
+  margin: 15px;
+  position: relative;
+}
+
+.certificate-frame:hover {
+  transform: translateZ(20px) scale(1.05);
+  box-shadow: 8px 8px 25px rgba(0, 0, 0, 0.3);
+  z-index: 2;
+}
+
+.certificate-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
+  color: #5d4037;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.certificate-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.1) 100%);
+}
+
+.certificate-title {
+  position: absolute;
+  bottom: 5px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+  color: #5d4037;
+  font-weight: bold;
+  background: rgba(255, 255, 255, 0.7);
+  padding: 3px 0;
+}
+
+.certificate-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.certificate-name {
+  position: absolute;
+  bottom: -30px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  color: white;
+  font-weight: bold;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+  z-index: 10;
+}
+
+.rug {
+  position: absolute;
+  width: 400px;
+  height: 280px;
+  background: linear-gradient(45deg, #9f4d4d, #b87373, #9f4d4d);
+  border-radius: 20px;
+  transform: translate3d(0, 175px, -450px) rotateX(90deg);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.rug-pattern {
+  width: 100%;
+  height: 100%;
+  background: 
+      repeating-linear-gradient(45deg, transparent, transparent 15px, rgba(0,0,0,0.1) 15px, rgba(0,0,0,0.1) 30px);
+  border-radius: 20px;
+}
+
+.navigation-info {
+  position: fixed;
+  top: 20px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-size: 18px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 15px;
+  border-radius: 0 0 15px 15px;
+  backdrop-filter: blur(8px);
+}
+
+.zoom-controls {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.zoom-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.4);
+  color: white;
+  border: 2px solid white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.zoom-btn:hover {
+  background: rgba(0, 0, 0, 0.6);
+  transform: scale(1.1);
+}
+
+.mysterious-light {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(255,215,0,0.5) 0%, transparent 70%);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 2s;
+  pointer-events: none;
+}
+
+.fog {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: 
+      radial-gradient(circle at 20% 50%, rgba(255,255,255,0.3) 0%, transparent 40%),
+      radial-gradient(circle at 80% 80%, rgba(255,255,255,0.2) 0%, transparent 40%);
+  opacity: 0;
+  transition: opacity 2s;
+  pointer-events: none;
+}
+
+.transition-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  z-index: 900;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.5s ease-in-out;
+}
+
+.wall-pattern {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: 
+      repeating-linear-gradient(90deg, 
+          transparent 0px, 
+          transparent 5px, 
+          rgba(139, 107, 70, 0.05) 5px, 
+          rgba(139, 107, 70, 0.05) 7px
+      ),
+      repeating-linear-gradient(0deg, 
+          transparent 0px, 
+          transparent 5px, 
+          rgba(139, 107, 70, 0.05) 5px, 
+          rgba(139, 107, 70, 0.05) 7px
+      );
+}
+
+.certificate-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.modal-content {
+  max-width: 80%;
+  max-height: 80%;
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+  transform: scale(0.9);
+  transition: transform 0.5s;
+}
+
+.modal-content img {
+  max-width: 100%;
+  max-height: 70vh;
+  display: block;
+}
+
+.close-modal {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 30px;
+  color: white;
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.5);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.welcome-text {
+  position: absolute;
+  top: 30px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  color: #5d4037;
+  font-size: 28px;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+.certificate-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 50%;
+  flex-wrap: wrap;
+}
+
+.upload-btn {
+  padding: 10px 15px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid white;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  display: inline-block;
+  transition: all 0.3s;
+}
+
+.upload-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+#imageUpload {
+  display: none;
+}
+
+/* استایل‌های ریسپانسیو برای موبایل */
+@media (max-width: 500px) {
+  body {
+    overflow: auto;
+    perspective: none;
+    height: auto;
+    min-height: 100vh;
+    display: block;
+    padding: 10px;
+  }
+  
+  .container {
+    perspective: none;
+    transform-style: flat;
+    height: auto;
+    width: 100%;
+  }
+  
+  .scene {
+    transform: none !important;
+    transition: none;
+    height: auto;
+    width: 100%;
+  }
+  
+  .room {
+    position: relative;
+    width: 100% !important;
+    height: auto;
+    transform: none !important;
+    top: 0;
+    left: 0;
+    margin: 0 auto;
+    padding: 10px;
+  }
+  
+  .wall {
+    position: relative !important;
+    transform: none !important;
+    width: 100% !important;
+    height: auto !important;
+    margin: 10px 0;
+    padding: 15px;
+    display: block;
+    min-height: auto;
+  }
+  
+  .back-wall, .left-wall, .right-wall {
+    transform: none !important;
+    width: 100% !important;
+    height: auto !important;
+    display: block;
+    padding: 15px;
+    position: relative;
+    margin: 15px 0;
+  }
+  
+  .floor, .ceiling, .rug, .mysterious-light, .fog, .wall-pattern, .door-passage {
+    display: none;
+  }
+  
+  .door-frame {
+    position: relative;
+    width: 80% !important;
+    height: auto;
+    aspect-ratio: 2/3;
+    margin: 30px auto;
+    transform: none !important;
+    display: block;
+    left: 0;
+    right: 0;
+  }
+  
+  .door {
+    width: 100% !important;
+    height: 100% !important;
+    transform: none !important;
+    margin: 0 auto;
+    position: relative;
+  }
+  
+  .door.open {
+    transform: none !important;
+  }
+  
+  .certificate-frame {
+    width: 45% !important;
+    height: 120px;
+    margin: 8px;
+    display: inline-block;
+    float: none;
+  }
+  
+  .certificate-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    height: auto;
+    margin: 10px 0;
+  }
+  
+  .navigation-info {
+    position: relative;
+    top: 0;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+  }
+  
+  .zoom-controls {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+  }
+  
+  .zoom-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+  
+  .welcome-text {
+    position: relative;
+    top: 0;
+    margin: 15px 0;
+    font-size: 18px;
+  }
+  
+  .certificate-modal {
+    padding: 10px;
+  }
+  
+  .modal-content {
+    max-width: 95%;
+    padding: 15px;
+  }
+  
+  .certificate-content {
+    font-size: 24px;
+  }
+  
+  .certificate-title {
+    font-size: 10px;
+  }
+  
+  .certificate-name {
+    position: relative;
+    bottom: 0;
+    margin-top: 5px;
+    font-size: 12px;
+  }
+  
+  /* اضافه کردن اسکرول برای محتوای اضافی */
+  .left-wall, .right-wall {
+    overflow-y: auto;
+    max-height: 400px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .room {
+      transform: translate3d(-50%, -50%, -500px) scale(0.8);
+  }
+  
+  .certificate-frame {
+      width: 180px;
+      height: 135px;
+  }
+}
+
+@media (max-width: 900px) {
+  .certificate-frame {
+      width: 160px;
+      height: 120px;
+  }
+}
+
+@media (max-width: 768px) {
+  .door, .door-frame, .door-passage {
+      width: 300px;
+      height: 600px;
+  }
+  
+  .navigation-info {
+      font-size: 16px;
+      top: 10px;
+      padding: 12px;
+  }
+  
+  .room {
+      transform: translate3d(-50%, -50%, -500px) scale(0.7);
+  }
+  
+  .certificate-frame {
+      width: 140px;
+      height: 105px;
+  }
+  
+  .zoom-btn {
+      width: 40px;
+      height: 40px;
+      font-size: 18px;
+  }
+  
+  .welcome-text {
+      font-size: 22px;
+      top: 20px;
+  }
+}
+
+@media (max-width: 650px) {
+  .certificate-frame {
+      width: 120px;
+      height: 90px;
+  }
+  
+  .welcome-text {
+      font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .door, .door-frame, .door-passage {
+      width: 250px;
+      height: 500px;
+  }
+  
+  .navigation-info {
+      font-size: 14px;
+  }
+  
+  .certificate-frame {
+      width: 100px;
+      height: 75px;
+  }
+  
+  .welcome-text {
+      font-size: 16px;
+  }
+}
