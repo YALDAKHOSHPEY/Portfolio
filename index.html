@@ -5,8 +5,777 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D Room with Certificates Wall</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
     <link rel="icon" href="./images/favicon.ico.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            overflow: hidden;
+            height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+            perspective: 1000px;
+        }
+
+        .container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            perspective: 1200px;
+            transform-style: preserve-3d;
+        }
+
+        .scene {
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 1.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .room {
+            position: absolute;
+            width: 1000px;
+            height: 700px;
+            transform-style: preserve-3d;
+            transform: translate3d(-50%, -50%, -500px) rotateX(5deg);
+            top: 50%;
+            left: 50%;
+            transition: transform 1.2s ease-out;
+        }
+
+        .wall {
+            position: absolute;
+            background: rgba(255, 253, 245, 0.92);
+            border: 1px solid #e0d6b9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .back-wall {
+            width: 1000px;
+            height: 700px;
+            transform: translate3d(0, 0, -500px);
+            background: linear-gradient(to bottom, #f9f7ed, #f2eed9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .left-wall {
+            width: 1000px;
+            height: 700px;
+            transform: translate3d(-500px, 0, 0) rotateY(90deg);
+            background: linear-gradient(to right, #e8e2cb, #f2eed9);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-content: space-around;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .right-wall {
+            width: 1000px;
+            height: 700px;
+            transform: translate3d(500px, 0, 0) rotateY(-90deg);
+            background: linear-gradient(to left, #e8e2cb, #f2eed9);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-content: space-around;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .floor {
+            width: 1000px;
+            height: 1000px;
+            transform: translate3d(0, 350px, 0) rotateX(90deg);
+            background: 
+                linear-gradient(45deg, #c4a97c 25%, transparent 25%, transparent 75%, #c4a97c 75%),
+                linear-gradient(45deg, #c4a97c 25%, #d6b98a 25%, #d6b98a 75%, #c4a97c 75%);
+            background-size: 100px 100px;
+            background-position: 0 0, 50px 50px;
+            margin-top: -150px;
+        }
+
+        .ceiling {
+            width: 1000px;
+            height: 1000px;
+            transform: translate3d(0, -350px, 0) rotateX(90deg);
+            background: 
+                repeating-linear-gradient(45deg, #f0e6d8, #f0e6d8 10px, #e8dcc8 10px, #e8dcc8 20px);
+            margin-top: -1000px;
+        }
+
+        .door-frame {
+            position: absolute;
+            width: 420px;
+            height: 620px;
+            background: linear-gradient(to right, #3b2f1a, #2e2414);
+            border: 8px solid #1f1a10;
+            border-radius: 14px;
+            transform: translate3d(0, 50px, 5px);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 0, 0, 0.3);
+            z-index: 8;
+        }
+
+        .door {
+            position: absolute;
+            width: 400px;
+            height: 600px;
+            background: linear-gradient(to right, #4a2c1f, #3b2318);
+            border: 6px solid #2e1c12;
+            border-radius: 10px;
+            transform-style: preserve-3d;
+            transform-origin: left;
+            transition: transform 1.8s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 10px 0 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .door:hover {
+            box-shadow: 15px 0 35px rgba(255, 215, 0, 0.6), 0 0 20px rgba(255, 215, 0, 0.4);
+            transform: translate3d(0, 0, 5px) rotateY(-5deg);
+        }
+
+        .door-texture {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(
+                    0deg,
+                    transparent 0%,
+                    rgba(0, 0, 0, 0.1) 2%,
+                    transparent 4%
+                );
+            background-size: 10px 10px;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .door-knob {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            width: 25px;
+            height: 25px;
+            background: radial-gradient(circle, #d4af37, #b8860b);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+            transition: transform 0.3s;
+            pointer-events: none;
+        }
+
+        .door:hover .door-knob {
+            transform: scale(1.1);
+        }
+
+        .door.open {
+            transform: rotateY(-110deg);
+        }
+
+        .door-glow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 70% 50%, rgba(255, 215, 0, 0.3) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 1s;
+            pointer-events: none;
+        }
+
+        .door.open .door-glow {
+            opacity: 1;
+        }
+
+        .door-passage {
+            position: absolute;
+            width: 400px;
+            height: 600px;
+            background: linear-gradient(to bottom, #000000, #1a1a2e);
+            border-radius: 10px;
+            transform: translate3d(0, 50px, -100px);
+            opacity: 0;
+            transition: opacity 1s, transform 1s;
+            z-index: 5;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.3);
+        }
+
+        .door-passage.open {
+            opacity: 1;
+            transform: translate3d(0, 50px, -50px);
+        }
+
+        .passage-glow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(255, 215, 0, 0.2) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 1s;
+            pointer-events: none;
+        }
+
+        .door-passage.open .passage-glow {
+            opacity: 1;
+        }
+
+        .certificate-frame {
+            width: 200px;
+            height: 150px;
+            background: #f5f5f5;
+            border: 8px solid #8b6b46;
+            border-radius: 8px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            transform-style: preserve-3d;
+            transition: transform 0.5s, box-shadow 0.5s;
+            cursor: pointer;
+            margin: 15px;
+            position: relative;
+        }
+
+        .certificate-frame:hover {
+            transform: translateZ(20px) scale(1.05);
+            box-shadow: 8px 8px 25px rgba(0, 0, 0, 0.3), 0 0 10px rgba(255, 215, 0, 0.4);
+            z-index: 2;
+        }
+
+        .certificate-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            color: #5d4037;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            pointer-events: none;
+        }
+
+        .certificate-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.1) 100%);
+            pointer-events: none;
+        }
+
+        .certificate-title {
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+            color: #5d4037;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 3px 0;
+            pointer-events: none;
+        }
+
+        .certificate-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .certificate-name {
+            position: absolute;
+            bottom: -30px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 14px;
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+            z-index: 10;
+        }
+
+        .rug {
+            position: absolute;
+            width: 400px;
+            height: 280px;
+            background: linear-gradient(45deg, #9f4d4d, #b87373, #9f4d4d);
+            border-radius: 20px;
+            transform: translate3d(0, 175px, -450px) rotateX(90deg);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .rug-pattern {
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(45deg, transparent, transparent 15px, rgba(0,0,0,0.1) 15px, rgba(0,0,0,0.1) 30px);
+            border-radius: 20px;
+        }
+
+        .navigation-info {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-size: 18px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 0 0 15px 15px;
+            backdrop-filter: blur(8px);
+        }
+
+        .zoom-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .zoom-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.4);
+            color: white;
+            border: 2px solid white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .zoom-btn:hover {
+            background: rgba(0, 0, 0, 0.6);
+            transform: scale(1.1);
+        }
+
+        .mysterious-light {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255,215,0,0.5) 0%, transparent 70%);
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 2s;
+            pointer-events: none;
+        }
+
+        .fog {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255,255,255,0.3) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(255,255,255,0.2) 0%, transparent 40%);
+            opacity: 0;
+            transition: opacity 2s;
+            pointer-events: none;
+        }
+
+        .transition-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 900;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        .wall-pattern {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(90deg, 
+                    transparent 0px, 
+                    transparent 5px, 
+                    rgba(139, 107, 70, 0.05) 5px, 
+                    rgba(139, 107, 70, 0.05) 7px
+                ),
+                repeating-linear-gradient(0deg, 
+                    transparent 0px, 
+                    transparent 5px, 
+                    rgba(139, 107, 70, 0.05) 5px, 
+                    rgba(139, 107, 70, 0.05) 7px
+                );
+        }
+
+        .certificate-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .modal-content {
+            max-width: 80%;
+            max-height: 80%;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            transform: scale(0.9);
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            max-height: 70vh;
+            display: block;
+            border-radius: 8px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            color: #5d4037;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .modal-loading {
+            display: none;
+            font-size: 16px;
+            color: #5d4037;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 30px;
+            color: white;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.5);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background 0.3s;
+        }
+
+        .close-modal:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .welcome-text {
+            position: absolute;
+            top: 30px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: #5d4037;
+            font-size: 28px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+            opacity: 0;
+            animation: fadeIn 1.5s ease-in forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .certificate-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 50%;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 500px) {
+            body {
+                overflow: auto;
+                perspective: none;
+                height: auto;
+                min-height: 100vh;
+                display: block;
+                padding: 10px;
+            }
+            
+            .container {
+                perspective: none;
+                transform-style: flat;
+                height: auto;
+                width: 100%;
+            }
+            
+            .scene {
+                transform: none !important;
+                transition: none;
+                height: auto;
+                width: 100%;
+            }
+            
+            .room {
+                position: relative;
+                width: 100% !important;
+                height: auto;
+                transform: none !important;
+                top: 0;
+                left: 0;
+                margin: 0 auto;
+                padding: 10px;
+            }
+            
+            .wall {
+                position: relative !important;
+                transform: none !important;
+                width: 100% !important;
+                height: auto !important;
+                margin: 10px 0;
+                padding: 15px;
+                display: block;
+                min-height: auto;
+            }
+            
+            .back-wall, .left-wall, .right-wall {
+                transform: none !important;
+                width: 100% !important;
+                height: auto !important;
+                display: block;
+                padding: 15px;
+                position: relative;
+                margin: 15px 0;
+            }
+            
+            .floor, .ceiling, .rug, .mysterious-light, .fog, .wall-pattern, .door-passage {
+                display: none;
+            }
+            
+            .door-frame {
+                position: relative;
+                width: 80% !important;
+                height: auto;
+                aspect-ratio: 2/3;
+                margin: 30px auto;
+                transform: none !important;
+                display: block;
+                left: 0;
+                right: 0;
+            }
+            
+            .door {
+                width: 100% !important;
+                height: 100% !important;
+                transform: none !important;
+                margin: 0 auto;
+                position: relative;
+            }
+            
+            .door.open {
+                transform: none !important;
+            }
+            
+            .certificate-frame {
+                width: 45% !important;
+                height: 120px;
+                margin: 8px;
+                display: inline-block;
+                float: none;
+            }
+            
+            .certificate-row {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                height: auto;
+                margin: 10px 0;
+            }
+            
+            .navigation-info {
+                position: relative;
+                top: 0;
+                padding: 10px;
+                font-size: 14px;
+                border-radius: 8px;
+                margin-bottom: 15px;
+            }
+            
+            .zoom-controls {
+                position: fixed;
+                bottom: 10px;
+                right: 10px;
+            }
+            
+            .zoom-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+            
+            .welcome-text {
+                position: relative;
+                top: 0;
+                margin: 15px 0;
+                font-size: 18px;
+            }
+            
+            .certificate-modal {
+                padding: 10px;
+            }
+            
+            .modal-content {
+                max-width: 95%;
+                padding: 15px;
+            }
+            
+            .certificate-content {
+                font-size: 24px;
+            }
+            
+            .certificate-title {
+                font-size: 10px;
+            }
+            
+            .certificate-name {
+                position: relative;
+                bottom: 0;
+                margin-top: 5px;
+                font-size: 12px;
+            }
+            
+            .left-wall, .right-wall {
+                overflow-y: auto;
+                max-height: 400px;
+            }
+        }
+
+        @media (max-width: 1100px) {
+            .room {
+                transform: translate3d(-50%, -50%, -500px) scale(0.8);
+            }
+            
+            .certificate-frame {
+                width: 180px;
+                height: 135px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .certificate-frame {
+                width: 160px;
+                height: 120px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .door, .door-frame, .door-passage {
+                width: 300px;
+                height: 600px;
+            }
+            
+            .navigation-info {
+                font-size: 16px;
+                top: 10px;
+                padding: 12px;
+            }
+            
+            .room {
+                transform: translate3d(-50%, -50%, -500px) scale(0.7);
+            }
+            
+            .certificate-frame {
+                width: 140px;
+                height: 105px;
+            }
+            
+            .zoom-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+            
+            .welcome-text {
+                font-size: 22px;
+                top: 20px;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .certificate-frame {
+                width: 120px;
+                height: 90px;
+            }
+            
+            .welcome-text {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .door, .door-frame, .door-passage {
+                width: 250px;
+                height: 500px;
+            }
+            
+            .navigation-info {
+                font-size: 14px;
+            }
+            
+            .certificate-frame {
+                width: 100px;
+                height: 75px;
+            }
+            
+            .welcome-text {
+                font-size: 16px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -18,7 +787,7 @@
                     <div class="welcome-text">Welcome to My Portfolio</div>
                     
                     <div class="door-frame">
-                        <div class="door" id="aboutDoor">
+                        <div class="door" id="aboutDoor" aria-label="Open door to about page">
                             <div class="door-texture"></div>
                             <div class="door-knob"></div>
                             <div class="door-glow"></div>
@@ -37,7 +806,7 @@
                     <div class="wall-pattern"></div>
                     
                     <div class="certificate-row" style="align-items: flex-start;">
-                        <div class="certificate-frame" data-id="1">
+                        <div class="certificate-frame" data-id="1" aria-label="View Digital marketing certificate">
                             <img class="certificate-image" src="images/Digital marketing.jpg" alt="Digital marketing Certificate">
                             <div class="certificate-content">
                                 <div class="certificate-title">Digital marketing-Google 2023/1/3</div>
@@ -45,7 +814,7 @@
                             <div class="certificate-name">Digital marketing-google</div>
                         </div>
                         
-                        <div class="certificate-frame" data-id="2">
+                        <div class="certificate-frame" data-id="2" aria-label="View Introduction python certificate">
                             <img class="certificate-image" src="images/CS50p-intruduction python.jpg" alt="introduction python Certificate">
                             <div class="certificate-content">
                                 <div class="certificate-title">introduction python-Harvard 2023/9/3</div>
@@ -53,7 +822,7 @@
                             <div class="certificate-name">CS50p-introduction-Harvard</div>
                         </div>
                         
-                        <div class="certificate-frame" data-id="3">
+                        <div class="certificate-frame" data-id="3" aria-label="View Completion ten problem certificate">
                             <img class="certificate-image" src="images/CS50x-completion ten problem.jpg" alt="completion ten problem Certificate">
                             <div class="certificate-content">
                                 <div class="certificate-title">completion 10problem-Harvard 2023/6/3</div>
@@ -61,7 +830,7 @@
                             <div class="certificate-name">CS50x-completion-Harvard</div>
                         </div>
                         
-                        <div class="certificate-frame" data-id="4">
+                        <div class="certificate-frame" data-id="4" aria-label="View Programming for everybody certificate">
                             <img class="certificate-image" src="images/coursera programming for everybody.jpg" alt="Coursera-Michigan Certificate">
                             <div class="certificate-content">
                                 <div class="certificate-title">programming for everybody-Coursera-Michigan 2024/10/31</div>
@@ -71,7 +840,7 @@
                     </div>
                     
                     <div class="certificate-row" style="align-items: flex-start;">
-                        <div class="certificate-frame" data-id="5">
+                        <div class="certificate-frame" data-id="5" aria-label="View Python data structure certificate">
                             <img class="certificate-image" src="images/python data structure.jpg" alt="Coursera-Michigan Certificate">
                             <div class="certificate-content">
                                 <div class="certificate-title">Python data structure-Coursera-Michigan 2024/11/3</div>
@@ -79,7 +848,7 @@
                             <div class="certificate-name">Python data structure</div>
                         </div>
                         
-                        <div class="certificate-frame" data-id="6">
+                        <div class="certificate-frame" data-id="6" aria-label="View Using Python to access Web data certificate">
                             <img class="certificate-image" src="images/using python to access web data.jpg" alt="Coursera-Michigan Certificate">
                             <div class="certificate-content">
                                 <div class="certificate-title">Using Python to access Web data-Coursera-Michigan 2024/11/7</div>
@@ -87,7 +856,7 @@
                             <div class="certificate-name">Using Python to access Web data</div>
                         </div>
                         
-                        <div class="certificate-frame" data-id="7">
+                        <div class="certificate-frame" data-id="7" aria-label="View Using databases with python certificate">
                             <img class="certificate-image" src="images/using databases with python.jpg" alt="Coursera-Michigan Certificate">
                             <div class="certificate-content">
                                 <div class="certificate-title">using databases with python-Coursera-Michigan 2024/11/10</div>
@@ -95,7 +864,7 @@
                             <div class="certificate-name">using databases with python</div>
                         </div>
                         
-                        <div class="certificate-frame" data-id="8">
+                        <div class="certificate-frame" data-id="8" aria-label="View Python for everybody certificate">
                             <img class="certificate-image" src="images/python for everybody-c.jpg" alt="Coursera-Michigan Specialization Certificate">
                             <div class="certificate-content">
                                 <div class="certificate-title">python for everybody-Coursera-Michigan 2024/11/15</div>
@@ -109,7 +878,7 @@
                     <div class="wall-pattern"></div>
                     
                     <div class="certificate-row" style="align-items: flex-start;">
-                        <div class="certificate-frame" data-id="17">
+                        <div class="certificate-frame" data-id="17" aria-label="View Introduction to software engineering certificate">
                             <img class="certificate-image" src="images/introduction to software engineering.jpg" alt="Coursera-IBM Certificate">
                             <div class="certificate-content">
                                 <div class="certificate-title">introduction to software engineering-Coursera-IBM 2024/12/26</div>
@@ -117,7 +886,7 @@
                             <div class="certificate-name">introduction to software engineering</div>
                         </div>
                         
-                        <div class="certificate-frame" data-id="18">
+                        <div class="certificate-frame" data-id="18" aria-label="View Introduction to html css javascript certificate">
                             <img class="certificate-image" src="images/introduction to html css jv.jpg" alt="Coursera-IBM Certificate">
                             <div class="certificate-content">
                                 <div class="certificate-title">introduction to html-css-javascript-Coursera-IBM</div>
@@ -125,7 +894,7 @@
                             <div class="certificate-name">introduction to html css javascript</div>
                         </div>
                         
-                        <div class="certificate-frame" data-id="19">
+                        <div class="certificate-frame" data-id="19" aria-label="View Introduction to html5 certificate">
                             <img class="certificate-image" src="images/introduction to html5.jpg" alt="Coursera-Michigan Certificate">
                             <div class="certificate-content">
                                 <div class="certificate-title">introduction to html5-Coursera-Michigan 2024/12/10</div>
@@ -133,7 +902,7 @@
                             <div class="certificate-name">introduction to html5</div>
                         </div>
                         
-                        <div class="certificate-frame" data-id="20">
+                        <div class="certificate-frame" data-id="20" aria-label="View Foundations of coding front end certificate">
                             <img class="certificate-image" src="images/foundations of coding front end.jpg" alt="Coursera-Microsoft Certificate">
                             <div class="certificate-content">
                                 <div class="certificate-title">foundations of coding front end-Coursera-Microsoft 2025/1/11</div>
@@ -143,7 +912,7 @@
                     </div>
                     
                     <div class="certificate-row" style="align-items: flex-start;">
-                        <div class="certificate-frame" data-id="21">
+                        <div class="certificate-frame" data-id="21" aria-label="View Introduction to programming with c# certificate">
                             <img class="certificate-image" src="images/introduction-c.jpg" alt="Coursera-Microsoft Certificate">
                             <div class="certificate-content">
                                 <div class="certificate-title">introduction-c#-Coursera-Microsoft 2025/1/27</div>
@@ -151,7 +920,7 @@
                             <div class="certificate-name">introduction to programming with c#</div>
                         </div>
                         
-                        <div class="certificate-frame" data-id="22">
+                        <div class="certificate-frame" data-id="22" aria-label="View Introduction web development certificate">
                             <img class="certificate-image" src="images/introduction web development.jpg" alt="Mobile Development Certificate">
                             <div class="certificate-content">
                                 <div class="certificate-title">introduction web development-Coursera-Microsoft 2025/6/26</div>
@@ -159,7 +928,7 @@
                             <div class="certificate-name">introduction web development</div>
                         </div>
                         
-                        <div class="certificate-frame" data-id="23">
+                        <div class="certificate-frame" data-id="23" aria-label="View Teacher training course certificate">
                             <img class="certificate-image" src="images/TTC.jpg" alt="Teacher training course Certificate">
                             <div class="certificate-content">
                                 <div class="certificate-title">Teacher training course-FR-EN 2002/1/10</div>
@@ -167,7 +936,7 @@
                             <div class="certificate-name">TTC</div>
                         </div>
                         
-                        <div class="certificate-frame" data-id="24">
+                        <div class="certificate-frame" data-id="24" aria-label="View Ruby fundamentals certificate">
                             <img class="certificate-image" src="images/Ruby fundamentals.jpg" alt="Coursera-Packt Certificate">
                             <div class="certificate-content">
                                 <div class="certificate-title">Ruby fundamentals-Coursera-Packt 2025/9/12</div>
@@ -187,34 +956,307 @@
         </div>
         
         <div class="navigation-info">
-            <i class="fas fa-door-open"></i> Click on the door to enter | <i class="fas fa-expand"></i> Use mouse to look around
+            <i class="fas fa-door-open"></i> Click or tap the door to enter | <i class="fas fa-image"></i> Click or tap certificates to view | <i class="fas fa-expand"></i> Use mouse to look around
         </div>
 
         <div class="zoom-controls">
-            <div class="zoom-btn" id="zoomIn"><i class="fas fa-plus"></i></div>
-            <div class="zoom-btn" id="zoomOut"><i class="fas fa-minus"></i></div>
-            <div class="zoom-btn" id="resetView"><i class="fas fa-sync"></i></div>
-        </div>
-
-        <div class="upload-container">
-            <p>Upload your certificate image:</p>
-            <input type="file" id="imageUpload" accept="image/*">
-            <label for="imageUpload" class="upload-btn">Choose Image</label>
-            <p>Then click on a frame to apply</p>
+            <div class="zoom-btn" id="zoomIn" aria-label="Zoom in"><i class="fas fa-plus"></i></div>
+            <div class="zoom-btn" id="zoomOut" aria-label="Zoom out"><i class="fas fa-minus"></i></div>
+            <div class="zoom-btn" id="resetView" aria-label="Reset view"><i class="fas fa-sync"></i></div>
         </div>
 
         <div class="transition-screen" id="transitionScreen"></div>
     </div>
 
     <div class="certificate-modal" id="certificateModal">
-        <div class="close-modal" id="closeModal"><i class="fas fa-times"></i></div>
+        <div class="close-modal" id="closeModal" aria-label="Close certificate modal"><i class="fas fa-times"></i></div>
         <div class="modal-content" id="modalContent">
-            <img src="" alt="Certificate" id="modalImage">
+            <div class="modal-title" id="modalTitle"></div>
+            <div class="modal-loading" id="modalLoading">Loading certificate...</div>
+            <img src="" alt="Certificate" id="modalImage" style="display: none;">
         </div>
     </div>
 
     <audio id="doorSound" src="./sound/old-wooden-door-creaking-closed-vadi-sound-1-00-06.mp3"></audio>
-    <script src="script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+   <script>
+(function () {
+    'use strict';
+
+    function $(id) { return document.getElementById(id); }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const scene = $('scene');
+        const room = $('room');
+        const aboutDoor = $('aboutDoor');
+        const doorPassage = $('doorPassage');
+        const mysteriousLight = $('mysteriousLight');
+        const fogEffect = $('fogEffect');
+        const transitionScreen = $('transitionScreen');
+        const zoomInBtn = $('zoomIn');
+        const zoomOutBtn = $('zoomOut');
+        const resetViewBtn = $('resetView');
+        const certificateModal = $('certificateModal');
+        const modalImage = $('modalImage');
+        const modalTitle = $('modalTitle');
+        const modalLoading = $('modalLoading');
+        const closeModal = $('closeModal');
+        const modalContent = $('modalContent');
+        const doorSound = $('doorSound');
+
+        let isTransitioning = false;
+        let currentZoom = 0;
+        const maxZoom = 2000;
+        const minZoom = 0;
+        let isMobile = window.matchMedia('(max-width: 500px)').matches;
+
+        function safePlayAudio(audioEl) {
+            if (!audioEl) return;
+            try {
+                const p = audioEl.play();
+                if (p && p.catch) p.catch(() => {});
+            } catch (e) {
+                console.warn('Audio playback failed:', e);
+            }
+        }
+
+        function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+
+        function setSceneTranslate(z) {
+            if (scene) scene.style.transform = `translateZ(${z}px)`;
+        }
+
+        function resetRoomTransform() {
+            if (!room) return;
+            room.style.transform = isMobile
+                ? 'none'
+                : 'translate3d(-50%, -50%, -500px) rotateX(5deg)';
+            room.style.opacity = '1';
+        }
+
+        function openCertificateModal(src, title) {
+            if (!certificateModal || !modalContent || !modalImage || !modalTitle || !modalLoading) return;
+            modalImage.style.display = 'none';
+            modalLoading.style.display = 'block';
+            modalTitle.textContent = title || 'Certificate';
+            modalImage.src = src;
+            certificateModal.style.display = 'flex';
+            requestAnimationFrame(() => {
+                certificateModal.style.opacity = '1';
+                modalContent.style.transform = 'scale(1)';
+            });
+
+            modalImage.onload = () => {
+                modalLoading.style.display = 'none';
+                modalImage.style.display = 'block';
+            };
+            modalImage.onerror = () => {
+                modalLoading.textContent = 'Failed to load certificate image';
+                modalLoading.style.display = 'block';
+            };
+        }
+
+        function closeCertificateModal() {
+            if (!certificateModal || !modalContent) return;
+            certificateModal.style.opacity = '0';
+            modalContent.style.transform = 'scale(0.9)';
+            setTimeout(() => {
+                certificateModal.style.display = 'none';
+                if (modalImage) modalImage.src = '';
+                if (modalTitle) modalTitle.textContent = '';
+                if (modalLoading) {
+                    modalLoading.textContent = 'Loading certificate...';
+                    modalLoading.style.display = 'none';
+                }
+            }, 400);
+        }
+
+        function triggerDoor(e) {
+            if (!aboutDoor || isTransitioning) return;
+            isTransitioning = true;
+
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            safePlayAudio(doorSound);
+            aboutDoor.classList.add('open');
+
+            if (doorPassage) {
+                if (!isMobile) {
+                    setTimeout(() => doorPassage.classList.add('open'), 450);
+                } else {
+                    doorPassage.classList.add('open');
+                }
+            }
+
+            if (mysteriousLight) mysteriousLight.style.opacity = '1';
+            if (fogEffect) fogEffect.style.opacity = '1';
+
+            if (!isMobile) {
+                setTimeout(() => {
+                    setSceneTranslate(800);
+                    if (room) room.style.transform = 'translate3d(-50%, -50%, -500px) rotateX(0deg)';
+                }, 700);
+            }
+
+            setTimeout(() => {
+                if (room) room.style.opacity = '0.3';
+                if (transitionScreen) transitionScreen.style.opacity = '1';
+            }, isMobile ? 400 : 1100);
+
+            setTimeout(() => {
+                try {
+                    window.location.href = 'about.html';
+                } catch (err) {
+                    console.error('Navigation failed:', err);
+                    isTransitioning = false;
+                    resetRoomTransform();
+                }
+            }, isMobile ? 900 : 1800);
+
+            setTimeout(() => {
+                isTransitioning = false;
+            }, 3000);
+        }
+
+        if (aboutDoor) {
+            const doorHandler = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                triggerDoor(e);
+            };
+
+            // کلیک دسکتاپ
+            aboutDoor.addEventListener('click', doorHandler, { passive: false });
+            // لمس موبایل
+            aboutDoor.addEventListener('touchstart', doorHandler, { passive: false });
+
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' && !isMobile) {
+                    triggerDoor();
+                }
+            });
+        }
+
+        const certificateFrames = document.querySelectorAll('.certificate-frame');
+        if (certificateFrames && certificateFrames.length) {
+            certificateFrames.forEach(frame => {
+                const img = frame.querySelector('.certificate-image');
+                const title = frame.querySelector('.certificate-title')?.textContent || 'Certificate';
+
+                const certHandler = (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (img && modalImage && certificateModal) {
+                        openCertificateModal(img.src, title);
+                    }
+                };
+
+                frame.addEventListener('click', certHandler, { passive: false });
+                frame.addEventListener('touchstart', certHandler, { passive: false });
+            });
+        }
+
+        if (closeModal) {
+            const closeHandler = (e) => {
+                e.preventDefault();
+                closeCertificateModal();
+            };
+            closeModal.addEventListener('click', closeHandler, { passive: false });
+            closeModal.addEventListener('touchstart', closeHandler, { passive: false });
+        }
+
+        if (zoomInBtn) {
+            zoomInBtn.addEventListener('click', function () {
+                currentZoom = clamp(currentZoom + 200, minZoom, maxZoom);
+                setSceneTranslate(currentZoom);
+            }, { passive: true });
+        }
+
+        if (zoomOutBtn) {
+            zoomOutBtn.addEventListener('click', function () {
+                currentZoom = clamp(currentZoom - 200, minZoom, maxZoom);
+                setSceneTranslate(currentZoom);
+            }, { passive: true });
+        }
+
+        if (resetViewBtn) {
+            resetViewBtn.addEventListener('click', function () {
+                currentZoom = 0;
+                setSceneTranslate(0);
+                resetRoomTransform();
+                if (transitionScreen) transitionScreen.style.opacity = '0';
+            }, { passive: true });
+        }
+
+        document.addEventListener('keydown', function (e) {
+            const key = e.key;
+            if ((key === 'Escape' || key === 'Esc') && certificateModal && certificateModal.style.display === 'flex') {
+                closeCertificateModal();
+            } else if ((key === '+' || key === '=') && zoomInBtn && !isMobile) {
+                zoomInBtn.click();
+            } else if ((key === '-' || key === '_') && zoomOutBtn && !isMobile) {
+                zoomOutBtn.click();
+            } else if (key === '0' && resetViewBtn && !isMobile) {
+                resetViewBtn.click();
+            }
+        });
+
+        if (!isMobile) {
+            let lastFrame = 0;
+            function onMouseMove(e) {
+                if (isTransitioning) return;
+                const now = performance.now();
+                if (now - lastFrame < 16) return;
+                lastFrame = now;
+                const xAxis = (window.innerWidth / 2 - e.clientX) / 50;
+                const yAxis = (window.innerHeight / 2 - e.clientY) / 50;
+                if (room) {
+                    room.style.transform = `translate3d(-50%, -50%, -500px) rotateX(${5 + yAxis}deg) rotateY(${xAxis}deg)`;
+                }
+            }
+            document.addEventListener('mousemove', onMouseMove, { passive: true });
+        }
+
+        if (certificateModal) {
+            const modalHandler = (ev) => {
+                if (ev.target === certificateModal) {
+                    ev.preventDefault();
+                    closeCertificateModal();
+                }
+            };
+            certificateModal.addEventListener('click', modalHandler);
+            certificateModal.addEventListener('touchstart', modalHandler, { passive: false });
+        }
+
+        function handleResize() {
+            isMobile = window.matchMedia('(max-width: 500px)').matches;
+            resetRoomTransform();
+            setSceneTranslate(0);
+        }
+
+        window.addEventListener('resize', handleResize, { passive: true });
+
+        resetRoomTransform();
+        setSceneTranslate(0);
+
+        window.addEventListener('error', (e) => {
+            console.error('Application error:', e);
+            resetRoomTransform();
+            isTransitioning = false;
+        });
+
+        window.addEventListener('beforeunload', () => {
+            if (certificateModal) certificateModal.style.display = 'none';
+            if (room) room.style.opacity = '1';
+            if (transitionScreen) transitionScreen.style.opacity = '0';
+        });
+    });
+})();
+</script>
 
 </body>
 </html>
