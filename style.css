@@ -220,6 +220,9 @@ body {
   opacity: 1;
 }
 
+/* === ادامه همه استایل‌ها و ریسپانسیو دقیقاً مثل کد شما === */
+/* شامل certificate-frame، rug، navigation-info، zoom-controls، media queries ... */
+
 .certificate-frame {
   width: 200px;
   height: 150px;
