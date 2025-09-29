@@ -1,151 +1,231 @@
-document.addEventListener('DOMContentLoaded', function() {
-  const scene = document.getElementById('scene');
-  const room = document.getElementById('room');
-  const aboutDoor = document.getElementById('aboutDoor');
-  const doorPassage = document.getElementById('doorPassage');
-  const mysteriousLight = document.getElementById('mysteriousLight');
-  const fogEffect = document.getElementById('fogEffect');
-  const transitionScreen = document.getElementById('transitionScreen');
-  const zoomInBtn = document.getElementById('zoomIn');
-  const zoomOutBtn = document.getElementById('zoomOut');
-  const resetViewBtn = document.getElementById('resetView');
-  const certificateModal = document.getElementById('certificateModal');
-  const modalImage = document.getElementById('modalImage');
-  const closeModal = document.getElementById('closeModal');
-  const modalContent = document.getElementById('modalContent');
-  const imageUpload = document.getElementById('imageUpload');
-  const doorSound = document.getElementById('doorSound');
-  
-  let isTransitioning = false;
-  let currentZoom = 0;
-  let maxZoom = 2000;
-  let minZoom = 0;
-  let selectedImage = null;
+(function () {
+  'use strict';
 
-  // Door interaction
-  aboutDoor.addEventListener('click', function() {
-      if (isTransitioning) return;
-      isTransitioning = true;
+  function $(id) { return document.getElementById(id); }
 
-      // Play door opening sound
-      doorSound.play();
+  document.addEventListener('DOMContentLoaded', function () {
+    const scene = $('scene');
+    const room = $('room');
+    const aboutDoor = $('aboutDoor');
+    const doorPassage = $('doorPassage');
+    const mysteriousLight = $('mysteriousLight');
+    const fogEffect = $('fogEffect');
+    const transitionScreen = $('transitionScreen');
+    const zoomInBtn = $('zoomIn');
+    const zoomOutBtn = $('zoomOut');
+    const resetViewBtn = $('resetView');
+    const certificateModal = $('certificateModal');
+    const modalImage = $('modalImage');
+    const closeModal = $('closeModal');
+    const modalContent = $('modalContent');
+    const imageUpload = $('imageUpload');
+    const doorSound = $('doorSound');
 
-      // Open the door with 3D rotation
-      aboutDoor.classList.add('open');
+    let isTransitioning = false;
+    let currentZoom = 0;
+    const maxZoom = 2000;
+    const minZoom = 0;
+    let selectedImage = null;
+    const isMobile = window.matchMedia('(max-width: 500px)').matches;
 
-      // Show the passage behind the door
-      setTimeout(() => {
-          doorPassage.classList.add('open');
-      }, 800);
+    function safePlayAudio(audioEl) {
+      if (!audioEl) return;
+      try {
+        const p = audioEl.play();
+        if (p && p.catch) p.catch(() => {});
+      } catch (e) {}
+    }
 
-      // Show ambient effects
-      mysteriousLight.style.opacity = '1';
-      fogEffect.style.opacity = '1';
+    function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
 
-      // Zoom in toward the door
-      setTimeout(() => {
-          scene.style.transform = 'translateZ(800px)';
-          room.style.transform = 'translate3d(-50%, -50%, -500px) rotateX(0deg)';
-      }, 1000);
+    function setSceneTranslate(z) {
+      if (scene) scene.style.transform = `translateZ(${z}px)`;
+    }
 
-      // Fade out room and show transition screen
-      setTimeout(() => {
-          room.style.opacity = '0.3';
-          transitionScreen.style.opacity = '1';
-      }, 1800);
+    function resetRoomTransform() {
+      if (!room) return;
+      room.style.transform = isMobile
+        ? 'none'
+        : 'translate3d(-50%, -50%, -500px) rotateX(5deg)';
+    }
 
-      // Redirect to about.html
-      setTimeout(() => {
-          window.location.href = 'about.html';
-      }, 2800);
-  });
-
-  // Certificate frame click event
-  const certificateFrames = document.querySelectorAll('.certificate-frame');
-  certificateFrames.forEach(frame => {
-      frame.addEventListener('click', function() {
-          if (selectedImage) {
-              const img = this.querySelector('.certificate-image');
-              img.src = selectedImage;
-          }
-          
-          const img = this.querySelector('.certificate-image');
-          modalImage.src = img.src;
-          certificateModal.style.display = 'flex';
-          setTimeout(() => {
-              certificateModal.style.opacity = '1';
-              modalContent.style.transform = 'scale(1)';
-          }, 10);
+    function openCertificateModal(src) {
+      if (!certificateModal || !modalContent) return;
+      if (modalImage && src) modalImage.src = src;
+      certificateModal.style.display = 'flex';
+      requestAnimationFrame(() => {
+        certificateModal.style.opacity = '1';
+        modalContent.style.transform = 'scale(1)';
       });
-  });
+    }
 
-  // Close modal
-  closeModal.addEventListener('click', function() {
+    function closeCertificateModal() {
+      if (!certificateModal || !modalContent) return;
       certificateModal.style.opacity = '0';
       modalContent.style.transform = 'scale(0.9)';
       setTimeout(() => {
-          certificateModal.style.display = 'none';
-      }, 500);
-  });
+        certificateModal.style.display = 'none';
+      }, 400);
+    }
 
-  // Zoom controls
-  zoomInBtn.addEventListener('click', function() {
-      if (currentZoom < maxZoom) {
-          currentZoom += 200;
-          scene.style.transform = `translateZ(${currentZoom}px)`;
+    // === اضافه کردن باز شدن در با کلیک و Enter ===
+    function triggerDoor() {
+      if (!aboutDoor || isTransitioning) return;
+      isTransitioning = true;
+
+      safePlayAudio(doorSound);
+      aboutDoor.classList.add('open');
+
+      if (doorPassage) {
+        if (!isMobile) {
+          setTimeout(() => doorPassage.classList.add('open'), 450);
+        } else {
+          doorPassage.classList.add('open');
+        }
       }
-  });
 
-  zoomOutBtn.addEventListener('click', function() {
-      if (currentZoom > minZoom) {
-          currentZoom -= 200;
-          scene.style.transform = `translateZ(${currentZoom}px)`;
+      if (mysteriousLight) mysteriousLight.style.opacity = '1';
+      if (fogEffect) fogEffect.style.opacity = '1';
+
+      if (!isMobile) {
+        setTimeout(() => {
+          setSceneTranslate(800);
+          if (room) room.style.transform = 'translate3d(-50%, -50%, -500px) rotateX(0deg)';
+        }, 700);
       }
-  });
 
-  resetViewBtn.addEventListener('click', function() {
-      currentZoom = 0;
-      scene.style.transform = 'translateZ(0px)';
-      room.style.transform = 'translate3d(-50%, -50%, -500px) rotateX(5deg)';
-  });
+      setTimeout(() => {
+        if (room) room.style.opacity = '0.3';
+        if (transitionScreen) transitionScreen.style.opacity = '1';
+      }, isMobile ? 400 : 1100);
 
-  // Image upload handling
-  imageUpload.addEventListener('change', function(e) {
-      const file = e.target.files[0];
-      if (file) {
-          const reader = new FileReader();
-          reader.onload = function(event) {
-              selectedImage = event.target.result;
-              alert('Image selected! Now click on any certificate frame to apply the image.');
-          };
-          reader.readAsDataURL(file);
+      setTimeout(() => {
+        try { window.location.href = 'about.html'; }
+        catch (err) { isTransitioning = false; }
+      }, isMobile ? 900 : 1800);
+
+      setTimeout(() => { isTransitioning = false; }, 3000);
+    }
+
+    if (aboutDoor) {
+      aboutDoor.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        triggerDoor();
+      }, { passive: false });
+    }
+
+    // اضافه کردن کلید Enter برای باز کردن در
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        triggerDoor();
       }
-  });
+    });
 
-  // Keyboard controls
-  document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') {
-          if (certificateModal.style.display === 'flex') {
-              closeModal.click();
+    // === بقیه کد شما بدون تغییر ===
+    const certificateFrames = document.querySelectorAll('.certificate-frame');
+    if (certificateFrames && certificateFrames.length) {
+      certificateFrames.forEach(frame => {
+        frame.addEventListener('click', function () {
+          const img = this.querySelector('.certificate-image');
+          if (selectedImage && img) {
+            img.src = selectedImage;
           }
-      }
-      
-      if (e.key === '+' || e.key === '=') {
-          zoomInBtn.click();
-      } else if (e.key === '-' || e.key === '_') {
-          zoomOutBtn.click();
-      } else if (e.key === '0') {
-          resetViewBtn.click();
-      }
-  });
+          if (img && modalImage && certificateModal) {
+            openCertificateModal(img.src);
+          }
+        });
+      });
+    }
 
-  // Add subtle room movement on mouse move
-  document.addEventListener('mousemove', function(e) {
-      if (isTransitioning) return;
-      
-      const xAxis = (window.innerWidth / 2 - e.pageX) / 50;
-      const yAxis = (window.innerHeight / 2 - e.pageY) / 50;
-      
-      room.style.transform = `translate3d(-50%, -50%, -500px) rotateX(${5 + yAxis}deg) rotateY(${xAxis}deg)`;
+    if (closeModal) {
+      closeModal.addEventListener('click', function () {
+        closeCertificateModal();
+      });
+    }
+
+    if (zoomInBtn) {
+      zoomInBtn.addEventListener('click', function () {
+        currentZoom = clamp(currentZoom + 200, minZoom, maxZoom);
+        setSceneTranslate(currentZoom);
+      }, { passive: true });
+    }
+
+    if (zoomOutBtn) {
+      zoomOutBtn.addEventListener('click', function () {
+        currentZoom = clamp(currentZoom - 200, minZoom, maxZoom);
+        setSceneTranslate(currentZoom);
+      }, { passive: true });
+    }
+
+    if (resetViewBtn) {
+      resetViewBtn.addEventListener('click', function () {
+        currentZoom = 0;
+        setSceneTranslate(0);
+        resetRoomTransform();
+        if (transitionScreen) transitionScreen.style.opacity = '0';
+        if (room) room.style.opacity = '';
+      }, { passive: true });
+    }
+
+    if (imageUpload) {
+      imageUpload.addEventListener('change', function (e) {
+        const file = (e.target && e.target.files) ? e.target.files[0] : null;
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function (ev) {
+          selectedImage = ev.target.result;
+          try { alert('Image selected! Now click on any certificate frame to apply the image.'); }
+          catch (e) {}
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    document.addEventListener('keydown', function (e) {
+      const key = e.key;
+      if ((key === 'Escape' || key === 'Esc') && certificateModal && certificateModal.style.display === 'flex') {
+        closeCertificateModal();
+      } else if ((key === '+' || key === '=') && zoomInBtn) {
+        zoomInBtn.click();
+      } else if ((key === '-' || key === '_') && zoomOutBtn) {
+        zoomOutBtn.click();
+      } else if (key === '0' && resetViewBtn) {
+        resetViewBtn.click();
+      }
+    });
+
+    if (!isMobile) {
+      let lastFrame = 0;
+      function onMouseMove(e) {
+        if (isTransitioning) return;
+        const now = performance.now();
+        if (now - lastFrame < 16) return;
+        lastFrame = now;
+        const xAxis = (window.innerWidth / 2 - e.clientX) / 50;
+        const yAxis = (window.innerHeight / 2 - e.clientY) / 50;
+        if (room) {
+          room.style.transform = `translate3d(-50%, -50%, -500px) rotateX(${5 + yAxis}deg) rotateY(${xAxis}deg)`;
+        }
+      }
+      document.addEventListener('mousemove', onMouseMove, { passive: true });
+    }
+
+    if (certificateModal) {
+      certificateModal.addEventListener('click', function (ev) {
+        if (ev.target === certificateModal) closeCertificateModal();
+      });
+    }
+
+    resetRoomTransform();
+    setSceneTranslate(0);
+
+    window.addEventListener('resize', function () {
+      const mobileNow = window.matchMedia('(max-width: 500px)').matches;
+      if (mobileNow !== isMobile) {
+        resetRoomTransform();
+        setSceneTranslate(0);
+      }
+    });
   });
-});
+})();
