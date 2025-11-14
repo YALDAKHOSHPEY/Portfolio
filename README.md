@@ -79,9 +79,17 @@ Portfolio/
  ├── images/
  │
  ├── certificates...
- │
- └── your-gif.gif
  ├── sound/
  └── css/
 ```
+---
+## 📄 License
+This project is licensed under the **MIT License**.
+
+---
+
+## 👩‍💻 Author
+**Yalda Khoshpey**  
+💼 **GitHub:** [@YALDAKHOSHPEY](https://github.com/YALDAKHOSHPEY)
+
 ---
