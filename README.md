@@ -68,3 +68,20 @@ An experimental 3D portfolio concept built with pure **HTML, CSS, and JavaScript
 ---
 
 ## 📁 Project Structure
+``` text
+Portfolio/
+ ├── index.html
+ ├── about.html
+ ├── projects.html
+ ├── skills.html
+ ├── style.css
+ ├── script.js
+ ├── images/
+ │
+ ├── certificates...
+ │
+ └── your-gif.gif
+ ├── sound/
+ └── css/
+```
+---
